@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `HyruleEvents`.`activity` (
   `speaker_email` VARCHAR(100) NOT NULL,
   `start_time` TIME NOT NULL,
   `end_time` TIME NOT NULL,
+  `max_capacity` INT NOT NULL,
   CONSTRAINT `fk_activity_speaker` FOREIGN KEY (`speaker_email`)
     REFERENCES `HyruleEvents`.`participant` (`email`),
   CONSTRAINT `fk_activity_event` FOREIGN KEY (`event_id`)
