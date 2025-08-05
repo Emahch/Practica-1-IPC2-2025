@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS `HyruleEvents`.`participant_event_registration` (
   `event_id` VARCHAR(20) NOT NULL,
   `participant_email` VARCHAR(100) NOT NULL,
   `type` VARCHAR(15) NOT NULL,
-  `payment_method` VARCHAR(15) NOT NULL,
-  `payment_amount` DOUBLE NOT NULL,
+  `payment_method` VARCHAR(15) NULL,
+  `payment_amount` DOUBLE NULL,
   `status` VARCHAR(15) NOT NULL,
   CONSTRAINT `pk_registration` PRIMARY KEY (`event_id`, `participant_email`),
   CONSTRAINT `fk_event_in_registration` FOREIGN KEY (`event_id`)
