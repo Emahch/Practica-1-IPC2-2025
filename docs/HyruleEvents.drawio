@@ -1146,6 +1146,9 @@
             <mxPoint x="-920" y="960" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="lJJlkqE87zt2LCmX-mN3-18" value="Actualizar clases a interfaces" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1690" y="608" width="180" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
