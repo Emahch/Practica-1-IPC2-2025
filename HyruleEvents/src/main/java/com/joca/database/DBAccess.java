@@ -2,6 +2,7 @@ package com.joca.database;
 
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
+import com.joca.model.filter.Filter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,10 +28,10 @@ public interface DBAccess<T> {
     List<T> findAll() throws SQLException, NotFoundException;
 
     /**
-     * Permite obtener información de la base de datos y filtrarla por sus atributos
-     * @param attributes map atributos de la entidad
+     * Permite obtener información de la base de datos y filtrarla por atributos
+     * @param filters filtros para la búsqueda
      * @return lista de entidades List<T>
      * @throws SQLException si ocurre un error al realizar la operación
      */
-    List<T> findByAttributes(HashMap<String,String> attributes) throws SQLException, NotFoundException;
+    List<T> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException;
 }

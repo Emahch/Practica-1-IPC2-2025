@@ -6,7 +6,6 @@ import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
