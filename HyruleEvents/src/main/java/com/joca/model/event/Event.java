@@ -10,6 +10,18 @@ public class Event {
     private LocalDate date;
     private int maxCapacity;
 
+    public Event(String id, String title, String location, EventTypeEnum type, LocalDate date, int maxCapacity) {
+        this.id = id;
+        this.title = title;
+        this.location = location;
+        this.type = type;
+        this.date = date;
+        this.maxCapacity = maxCapacity;
+    }
+
+    public Event() {
+    }
+
     public String getId() {
         return id;
     }
