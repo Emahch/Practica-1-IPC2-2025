@@ -1,6 +1,7 @@
 package com.joca.database.event;
 
 import com.joca.database.DBAccess;
+import com.joca.database.DBConnection;
 import com.joca.database.OneKey;
 import com.joca.model.event.Event;
 import com.joca.model.event.EventTypeEnum;
@@ -11,17 +12,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventDB extends DBAccess<Event> implements OneKey<Event> {
-
-    public EventDB(Connection connection) {
-        super(connection);
-    }
+public class EventDB extends DBConnection implements OneKey<Event> {
 
     @Override
     public void insert(Event event) throws SQLException, NotRowsAffectedException {
         String query = "INSERT INTO event (id, title, date, type, location, max_capacity) VALUES" +
                 "(?,?,?,?,?,?);";
-        try (PreparedStatement st = connection.prepareStatement(query)){
+        try (PreparedStatement st = getConnection().prepareStatement(query)){
             st.setString(1, event.getId());
             st.setString(2,event.getTitle());
             st.setDate(3, Date.valueOf(event.getDate()));
@@ -40,7 +37,7 @@ public class EventDB extends DBAccess<Event> implements OneKey<Event> {
     public List<Event> findAll() throws SQLException, NotFoundException {
         String query = "SELECT * FROM event";
         List<Event> events = new ArrayList<>();
-        try (PreparedStatement st = connection.prepareStatement(query);
+        try (PreparedStatement st = getConnection().prepareStatement(query);
              ResultSet result = st.executeQuery()) {
 
             while (result.next()) {
@@ -63,7 +60,7 @@ public class EventDB extends DBAccess<Event> implements OneKey<Event> {
     @Override
     public Event findByKey(String primaryKey) throws SQLException, NotFoundException {
         String query = "SELECT * FROM event WHERE id = ?";
-        try (PreparedStatement st = connection.prepareStatement(query)) {
+        try (PreparedStatement st = getConnection().prepareStatement(query)) {
             st.setString(1,primaryKey);
 
             try (ResultSet result = st.executeQuery()) {
@@ -86,7 +83,7 @@ public class EventDB extends DBAccess<Event> implements OneKey<Event> {
     public void updateByKey(Event event, String primaryKey) throws SQLException, NotRowsAffectedException {
         String query = "UPDATE event SET id = ?, title = ?, date = ?, type = ?, location = ?, max_capacity = ? " +
                 "WHERE id = ?";
-        try (PreparedStatement st = connection.prepareStatement(query)) {
+        try (PreparedStatement st = getConnection().prepareStatement(query)) {
             st.setString(1, event.getId());
             st.setString(2,event.getTitle());
             st.setDate(3, Date.valueOf(event.getDate()));
@@ -105,7 +102,7 @@ public class EventDB extends DBAccess<Event> implements OneKey<Event> {
     @Override
     public void deleteByKey(String primaryKey) throws SQLException, NotRowsAffectedException {
         String query = "DELETE FROM event WHERE id = ?";
-        try (PreparedStatement st = connection.prepareStatement(query)) {
+        try (PreparedStatement st = getConnection().prepareStatement(query)) {
             st.setString(1, primaryKey);
 
             int result = st.executeUpdate();
@@ -118,7 +115,7 @@ public class EventDB extends DBAccess<Event> implements OneKey<Event> {
     @Override
     public boolean isKeyInUse(String primaryKey) throws SQLException {
         String query = "SELECT COUNT(*) AS c FROM event WHERE id = ?";
-        try (PreparedStatement st = connection.prepareStatement(query)) {
+        try (PreparedStatement st = getConnection().prepareStatement(query)) {
             st.setString(1,primaryKey);
 
             ResultSet result = st.executeQuery();

@@ -7,14 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-public interface MultiKey<T> {
-    /**
-     * Permite obtener información de la base de datos y filtrarla por sus atributos
-     * @param attributes map atributos de la entidad
-     * @return lista de entidades List<T>
-     * @throws SQLException si ocurre un error al realizar la operación
-     */
-    List<T> findByAttributes(HashMap<String,String> attributes) throws SQLException, NotFoundException;
+public interface MultiKey<T> extends DBAccess<T> {
 
     /**
      * Permite eliminar un registro de la base de datos filtrada por sus atributos
@@ -31,4 +24,12 @@ public interface MultiKey<T> {
      * @throws NotFoundException si no se encuentra la entidad con las llaves primarias originales
      */
     void updateByAttributes(T entity, HashMap<String,String> attributes) throws SQLException, NotFoundException;
+
+    /**
+     * Devuelve true si se encuentra un registro existente en la base de datos con las llaves indicadas
+     * @param keys llaves primarias de la entidad
+     * @return true si ya existe en la base de datos, false si no
+     * @throws SQLException si ocurre un error al realizar la operación
+     */
+    boolean isKeysInUse(HashMap<String,String> keys) throws SQLException;
 }

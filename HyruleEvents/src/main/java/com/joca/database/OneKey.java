@@ -5,7 +5,7 @@ import com.joca.model.exceptions.NotRowsAffectedException;
 
 import java.sql.SQLException;
 
-public interface OneKey<T> {
+public interface OneKey<T> extends DBAccess<T> {
     /**
      * Permite obtener una entidad con base en la llave primaria
      * Debe usarse cuando la entidad tiene una sola llave primaria

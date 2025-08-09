@@ -14,8 +14,8 @@ public class EventService {
 
     private EventDB eventDB;
 
-    public EventService(Connection connection) {
-        this.eventDB = new EventDB(connection);
+    public EventService(EventDB eventDB) {
+        this.eventDB = eventDB;
     }
 
     public void createEvent(Event event) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
