@@ -5,6 +5,7 @@ import com.joca.model.event.Event;
 import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
+import com.joca.model.filter.Filter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -46,5 +47,9 @@ public class EventService {
 
     public boolean isKeyInUse(String eventID) throws SQLException {
         return eventDB.isKeyInUse(eventID);
+    }
+
+    public List<Event> getEventsByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+        return eventDB.findByAttributes(filters);
     }
 }

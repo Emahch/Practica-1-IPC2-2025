@@ -1,8 +1,13 @@
 package com.joca.database;
 
+import com.joca.model.filter.Filter;
+import com.joca.model.filter.FilterDTO;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBConnection {
     public static final String URL = "jdbc:mysql://localhost:3306/HyruleEvents";
@@ -11,5 +16,21 @@ public class DBConnection {
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+    }
+
+    protected FilterDTO processFilters(List<Filter> filters, String queryWithoutFilters) {
+        StringBuilder sql = new StringBuilder(queryWithoutFilters);
+        List<Object> values = new ArrayList<>();
+        if (!filters.isEmpty()) {
+            sql.append(" WHERE ");
+            List<String> conditions = new ArrayList<>();
+            for (Filter filter : filters) {
+                conditions.add(filter.getColumnName() + " " + filter.getType().getOperator() +  " ?");
+                values.add(filter.getValue());
+            }
+            sql.append(String.join(" AND ", conditions));
+        }
+
+        return new FilterDTO(values.toArray(), sql.toString());
     }
 }
