@@ -21,7 +21,7 @@ public class DBConnection {
     protected FilterDTO processFilters(List<Filter> filters, String queryWithoutFilters) {
         StringBuilder sql = new StringBuilder(queryWithoutFilters);
         List<Object> values = new ArrayList<>();
-        if (!filters.isEmpty()) {
+        if (filters != null && !filters.isEmpty()) {
             sql.append(" WHERE ");
             List<String> conditions = new ArrayList<>();
             for (Filter filter : filters) {
