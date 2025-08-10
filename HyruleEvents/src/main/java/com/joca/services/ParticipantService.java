@@ -1,4 +1,4 @@
-package com.joca.services.ParticipantService;
+package com.joca.services;
 
 import com.joca.database.participant.ParticipantDB;
 import com.joca.model.participant.Participant;

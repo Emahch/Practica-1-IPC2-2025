@@ -1,4 +1,7 @@
 package com.joca.model.participant;
 
-public class ParticipantTypeEnum {
+public enum ParticipantTypeEnum {
+    ESTUDIANTE,
+    PROFESIONAL,
+    INVITADO
 }
