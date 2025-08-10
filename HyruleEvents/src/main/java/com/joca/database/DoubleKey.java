@@ -1,9 +1,8 @@
 package com.joca.database;
 
-import com.joca.model.exceptions.NotFoundException;
+import com.joca.model.exceptions.NotRowsAffectedException;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public interface DoubleKey<T> extends DBAccess<T> {
 
@@ -12,8 +11,9 @@ public interface DoubleKey<T> extends DBAccess<T> {
      * @param key1 primera llave primaria
      * @param key2 segunda llave primaria
      * @throws SQLException si ocurre un error al realizar la operación
+     * @throws NotRowsAffectedException si no se ejecutan cambios (no se realizó la operación)
      */
-    void deleteByKeys(String key1, String key2) throws SQLException;
+    void deleteByKeys(String key1, String key2) throws SQLException, NotRowsAffectedException;
 
     /**
      * Actualiza un registro de la base de datos, especificando sus llaves primarias originales
@@ -21,9 +21,9 @@ public interface DoubleKey<T> extends DBAccess<T> {
      * @param key1 primera llave primaria
      * @param key2 segunda llave primaria
      * @throws SQLException si ocurre un error al realizar la operación
-     * @throws NotFoundException si no se encuentra la entidad con las llaves primarias originales
+     * @throws NotRowsAffectedException si no se ejecuta la operación
      */
-    void updateByKeys(T entity, String key1, String key2) throws SQLException, NotFoundException;
+    void updateByKeys(T entity, String key1, String key2) throws SQLException, NotRowsAffectedException;
 
     /**
      * Devuelve true si se encuentra un registro existente en la base de datos con las llaves indicadas
