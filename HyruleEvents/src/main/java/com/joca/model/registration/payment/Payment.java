@@ -1,15 +1,28 @@
 package com.joca.model.registration.payment;
 
 public class Payment {
+    private String participantEmail;
+    private String eventId;
     private PaymentMethodEnum method;
     private double amount;
 
-    public Payment(PaymentMethodEnum method, double amount) {
-        this.method = method;
-        this.amount = amount;
+    public Payment() {
     }
 
-    public Payment() {
+    public String getParticipantEmail() {
+        return participantEmail;
+    }
+
+    public void setParticipantEmail(String participantEmail) {
+        this.participantEmail = participantEmail;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     public PaymentMethodEnum getMethod() {

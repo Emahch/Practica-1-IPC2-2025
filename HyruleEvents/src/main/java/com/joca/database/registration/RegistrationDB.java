@@ -58,7 +58,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
             st.setString(3, registration.getType().name());
             if (registration.getPayment().isEmpty()) {
                 st.setNull(4, Types.VARCHAR);
-                st.setNull(5, Types.DECIMAL);
+                st.setNull(5, Types.DOUBLE);
             } else {
                 st.setString(4, registration.getPayment().get().getMethod().name());
                 st.setDouble(5, registration.getPayment().get().getAmount());

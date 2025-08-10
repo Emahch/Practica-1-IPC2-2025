@@ -71,11 +71,6 @@ public class RegistrationService {
         return registration.getParticipantEmail().equals(oldEmail) && registration.getEventId().equals(oldId);
     }
 
-    public boolean isRegisterValidated(String participantEmail, String eventId) throws SQLException, NotFoundException {
-        Registration registration = getRegistrationByID(participantEmail, eventId);
-        return registration.getStatus().equals(RegistrationStatusEnum.VALIDADA);
-    }
-
     public boolean isAvailableCapacity(String eventId) throws SQLException, NotFoundException {
         int actualCapacity = registrationDB.getRegistrationsQuantity(eventId);
         EventDB eventDB = new EventDB();
