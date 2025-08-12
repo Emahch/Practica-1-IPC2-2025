@@ -1,4 +1,4 @@
-package com.joca.services.event;
+package com.joca.services;
 
 import com.joca.database.event.EventDB;
 import com.joca.model.event.Event;
