@@ -38,7 +38,7 @@ public class EventService {
             throw new DuplicatedKeyException("Error al actualizar el evento, ya existe un evento con el id: " + event.getId());
         }
 
-        eventDB.updateByKey(event,originalEventID);
+        eventDB.updateByKey(event, originalEventID);
     }
 
     public void deleteEvent(String eventID) throws SQLException, NotRowsAffectedException {

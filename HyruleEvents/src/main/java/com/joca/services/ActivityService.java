@@ -2,12 +2,12 @@ package com.joca.services;
 
 import com.joca.database.activity.ActivityDB;
 import com.joca.database.event.EventDB;
+import com.joca.model.activity.Activity;
 import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
-import com.joca.model.activity.Activity;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -48,7 +48,7 @@ public class ActivityService {
             throw new InvalidRequisitesException("Error al actualizar la actividad, el evento con id: " + activity.getEventID() + " no existe");
         }
         //Pendiente de validación de speaker
-        activityDB.updateByKey(activity,originalActivityID);
+        activityDB.updateByKey(activity, originalActivityID);
     }
 
     public void deleteActivity(String activityID) throws SQLException, NotRowsAffectedException {

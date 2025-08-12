@@ -10,7 +10,7 @@ public class Activity {
     private ActivityTypeEnum type;
     private LocalTime startTime;
     private LocalTime endTime;
-    private int max_capacity;
+    private int maxCapacity;
 
     public Activity() {
     }
@@ -71,11 +71,11 @@ public class Activity {
         this.endTime = endTime;
     }
 
-    public int getMax_capacity() {
-        return max_capacity;
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 
-    public void setMax_capacity(int max_capacity) {
-        this.max_capacity = max_capacity;
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 }

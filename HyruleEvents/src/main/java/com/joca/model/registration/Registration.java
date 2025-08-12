@@ -11,7 +11,8 @@ public class Registration {
     private Optional<Payment> payment;
     private RegistrationStatusEnum status;
 
-    public Registration() {}
+    public Registration() {
+    }
 
     public String getParticipantEmail() {
         return participantEmail;

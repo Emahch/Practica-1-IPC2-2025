@@ -1,11 +1,11 @@
 package com.joca.services;
 
 import com.joca.database.participant.ParticipantDB;
-import com.joca.model.participant.Participant;
 import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
+import com.joca.model.participant.Participant;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -38,7 +38,7 @@ public class ParticipantService {
             throw new DuplicatedKeyException("Error al actualizar el participante, el correo : " + participant.getEmail() + " ya esta en uso");
         }
 
-        participantDB.updateByKey(participant,originalParticipantID);
+        participantDB.updateByKey(participant, originalParticipantID);
     }
 
     public void deleteParticipant(String participantID) throws SQLException, NotRowsAffectedException {

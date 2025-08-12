@@ -9,10 +9,7 @@ import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
 import com.joca.model.filter.FilterDTO;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +17,9 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     @Override
     public Activity findByKey(String primaryKey) throws SQLException, NotFoundException {
         String query = "SELECT * FROM activity WHERE id = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
-            st.setString(1,primaryKey);
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, primaryKey);
 
             try (ResultSet result = st.executeQuery()) {
                 if (result.next()) {
@@ -31,7 +29,7 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
                     activity.setEventID(result.getString("event_id"));
                     activity.setSpeakerEmail(result.getString("speaker_email"));
                     activity.setType(ActivityTypeEnum.valueOf(result.getString("type")));
-                    activity.setMax_capacity(result.getInt("max_capacity"));
+                    activity.setMaxCapacity(result.getInt("max_capacity"));
                     activity.setStartTime(result.getTime("start_time").toLocalTime());
                     activity.setEndTime(result.getTime("end_time").toLocalTime());
                     return activity;
@@ -45,7 +43,8 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     public void updateByKey(Activity activity, String primaryKey) throws SQLException, NotRowsAffectedException {
         String query = "UPDATE activity SET id = ?, event_id = ?, title = ?, type = ?, speaker_email = ?, " +
                 "start_time = ?, end_time = ?, max_capacity = ? WHERE id = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, activity.getId());
             st.setString(2, activity.getEventID());
             st.setString(3, activity.getTitle());
@@ -53,7 +52,7 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
             st.setString(5, activity.getSpeakerEmail());
             st.setTime(6, Time.valueOf(activity.getStartTime()));
             st.setTime(7, Time.valueOf(activity.getEndTime()));
-            st.setInt(8, activity.getMax_capacity());
+            st.setInt(8, activity.getMaxCapacity());
             st.setString(9, primaryKey);
 
             int result = st.executeUpdate();
@@ -66,7 +65,8 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     @Override
     public void deleteByKey(String primaryKey) throws SQLException, NotRowsAffectedException {
         String query = "DELETE FROM activity WHERE id = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, primaryKey);
 
             int result = st.executeUpdate();
@@ -79,8 +79,9 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     @Override
     public boolean isKeyInUse(String primaryKey) throws SQLException {
         String query = "SELECT COUNT(*) AS c FROM activity WHERE id = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
-            st.setString(1,primaryKey);
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, primaryKey);
 
             ResultSet result = st.executeQuery();
             if (result.next()) {
@@ -94,7 +95,8 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     public void insert(Activity activity) throws SQLException, NotRowsAffectedException {
         String query = "INSERT INTO activity (id, event_id, title, type, speaker_email, start_time, end_time, max_capacity) VALUES" +
                 "(?,?,?,?,?,?,?,?);";
-        try (PreparedStatement st = getConnection().prepareStatement(query)){
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, activity.getId());
             st.setString(2, activity.getEventID());
             st.setString(3, activity.getTitle());
@@ -102,7 +104,7 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
             st.setString(5, activity.getSpeakerEmail());
             st.setTime(6, Time.valueOf(activity.getStartTime()));
             st.setTime(7, Time.valueOf(activity.getEndTime()));
-            st.setInt(8, activity.getMax_capacity());
+            st.setInt(8, activity.getMaxCapacity());
 
             int result = st.executeUpdate();
             if (result == 0) {
@@ -116,7 +118,8 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
         String query = "SELECT * FROM activity";
         List<Activity> activities = new ArrayList<>();
 
-        try (PreparedStatement st = getConnection().prepareStatement(query);
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query);
              ResultSet result = st.executeQuery()) {
 
             while (result.next()) {
@@ -126,7 +129,7 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
                 activity.setEventID(result.getString("event_id"));
                 activity.setSpeakerEmail(result.getString("speaker_email"));
                 activity.setType(ActivityTypeEnum.valueOf(result.getString("type")));
-                activity.setMax_capacity(result.getInt("max_capacity"));
+                activity.setMaxCapacity(result.getInt("max_capacity"));
                 activity.setStartTime(result.getTime("start_time").toLocalTime());
                 activity.setEndTime(result.getTime("end_time").toLocalTime());
                 activities.add(activity);
@@ -141,12 +144,13 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     @Override
     public List<Activity> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
         String query = "SELECT * FROM activity";
-        FilterDTO filterDTO = processFilters(filters,query);
+        FilterDTO filterDTO = processFilters(filters, query);
         List<Activity> activities = new ArrayList<>();
 
-        try (PreparedStatement st = getConnection().prepareStatement(filterDTO.getQueryWithFilters())) {
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(filterDTO.getQueryWithFilters())) {
             for (int i = 0; i < filterDTO.getValues().length; i++) {
-                st.setObject(i+1, filterDTO.getValues()[i]);
+                st.setObject(i + 1, filterDTO.getValues()[i]);
             }
 
             try (ResultSet result = st.executeQuery()) {
@@ -157,7 +161,7 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
                     activity.setEventID(result.getString("event_id"));
                     activity.setSpeakerEmail(result.getString("speaker_email"));
                     activity.setType(ActivityTypeEnum.valueOf(result.getString("type")));
-                    activity.setMax_capacity(result.getInt("max_capacity"));
+                    activity.setMaxCapacity(result.getInt("max_capacity"));
                     activity.setStartTime(result.getTime("start_time").toLocalTime());
                     activity.setEndTime(result.getTime("end_time").toLocalTime());
                     activities.add(activity);

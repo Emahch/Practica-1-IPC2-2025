@@ -26,7 +26,7 @@ public class PaymentValidationService {
     }
 
     public Payment getPayment(String participantEmail, String eventId) throws SQLException, NotFoundException {
-        Optional<Payment> payment = paymentValidationDB.getPayment(participantEmail,eventId);
+        Optional<Payment> payment = paymentValidationDB.getPayment(participantEmail, eventId);
         if (payment.isEmpty()) {
             throw new NotFoundException("No se encontró información de pago del participante: " + participantEmail +
                     " en el evento: " + eventId);
@@ -35,7 +35,7 @@ public class PaymentValidationService {
     }
 
     public ValidationDTO getValidationStatus(String participantEmail, String eventId) throws SQLException, NotFoundException {
-        return paymentValidationDB.getValidation(participantEmail,eventId);
+        return paymentValidationDB.getValidation(participantEmail, eventId);
     }
 
     public void setPayment(Payment payment) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, NotFoundException {

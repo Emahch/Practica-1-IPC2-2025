@@ -10,7 +10,6 @@ import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
 import com.joca.model.filter.FilterTypeEnum;
 import com.joca.model.registration.Registration;
-import com.joca.model.registration.RegistrationStatusEnum;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -47,7 +46,7 @@ public class RegistrationService {
 
     public void updateRegistration(Registration registration, String participantEmail, String eventId) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
         if (isKeysInUse(registration.getParticipantEmail(), registration.getEventId())
-            && !isSameKey(registration, participantEmail, eventId)) {
+                && !isSameKey(registration, participantEmail, eventId)) {
             throw new DuplicatedKeyException("Error al actualizar la inscripción, el participante : "
                     + registration.getParticipantEmail() + " ya se encuentra registrado en el evento: " + registration.getEventId());
         }
@@ -60,7 +59,7 @@ public class RegistrationService {
     }
 
     public boolean isKeysInUse(String participantEmail, String eventId) throws SQLException {
-        return registrationDB.isKeysInUse(participantEmail,eventId);
+        return registrationDB.isKeysInUse(participantEmail, eventId);
     }
 
     public List<Registration> getRegistrationsByFilter(List<Filter> filters) throws SQLException, NotFoundException {

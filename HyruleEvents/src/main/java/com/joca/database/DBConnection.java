@@ -14,7 +14,7 @@ public class DBConnection {
     public static final String USER_NAME = "rootx";
     public static final String PASSWORD = "password1234";
 
-    public Connection getConnection() throws SQLException {
+    public Connection connect() throws SQLException {
         return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
 
@@ -25,7 +25,7 @@ public class DBConnection {
             sql.append(" WHERE ");
             List<String> conditions = new ArrayList<>();
             for (Filter filter : filters) {
-                conditions.add(filter.getColumnName() + " " + filter.getType().getOperator() +  " ?");
+                conditions.add(filter.getColumnName() + " " + filter.getType().getOperator() + " ?");
                 values.add(filter.getValue());
             }
             sql.append(String.join(" AND ", conditions));

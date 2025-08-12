@@ -9,6 +9,7 @@ import com.joca.model.filter.FilterDTO;
 import com.joca.model.participant.Participant;
 import com.joca.model.participant.ParticipantTypeEnum;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +20,9 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     @Override
     public Participant findByKey(String primaryKey) throws SQLException, NotFoundException {
         String query = "SELECT * FROM participant WHERE email = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
-            st.setString(1,primaryKey);
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, primaryKey);
 
             try (ResultSet result = st.executeQuery()) {
                 if (result.next()) {
@@ -40,9 +42,10 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     public void updateByKey(Participant participant, String originalKey) throws SQLException, NotRowsAffectedException {
         String query = "UPDATE participant SET email = ?, name = ?, type = ?, institution = ? " +
                 "WHERE email = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, participant.getEmail());
-            st.setString(2,participant.getName());
+            st.setString(2, participant.getName());
             st.setString(3, participant.getType().name());
             st.setString(4, participant.getInstitution());
             st.setString(5, originalKey);
@@ -57,7 +60,8 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     @Override
     public void deleteByKey(String primaryKey) throws SQLException, NotRowsAffectedException {
         String query = "DELETE FROM participant WHERE email = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, primaryKey);
 
             int result = st.executeUpdate();
@@ -70,8 +74,9 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     @Override
     public boolean isKeyInUse(String primaryKey) throws SQLException {
         String query = "SELECT COUNT(*) AS c FROM participant WHERE email = ?";
-        try (PreparedStatement st = getConnection().prepareStatement(query)) {
-            st.setString(1,primaryKey);
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, primaryKey);
 
             ResultSet result = st.executeQuery();
             if (result.next()) {
@@ -85,9 +90,10 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     public void insert(Participant participant) throws SQLException, NotRowsAffectedException {
         String query = "INSERT INTO participant (email, name, type, institution) VALUES" +
                 "(?,?,?,?);";
-        try (PreparedStatement st = getConnection().prepareStatement(query)){
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, participant.getEmail());
-            st.setString(2,participant.getName());
+            st.setString(2, participant.getName());
             st.setString(3, participant.getType().name());
             st.setString(4, participant.getInstitution());
 
@@ -103,7 +109,8 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
         String query = "SELECT * FROM participant";
         List<Participant> participants = new ArrayList<>();
 
-        try (PreparedStatement st = getConnection().prepareStatement(query);
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(query);
              ResultSet result = st.executeQuery()) {
 
             while (result.next()) {
@@ -124,12 +131,13 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     @Override
     public List<Participant> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
         String query = "SELECT * FROM participant";
-        FilterDTO filterDTO = processFilters(filters,query);
+        FilterDTO filterDTO = processFilters(filters, query);
         List<Participant> participants = new ArrayList<>();
 
-        try (PreparedStatement st = getConnection().prepareStatement(filterDTO.getQueryWithFilters())) {
+        try (Connection connection = connect();
+             PreparedStatement st = connection.prepareStatement(filterDTO.getQueryWithFilters())) {
             for (int i = 0; i < filterDTO.getValues().length; i++) {
-                st.setObject(i+1, filterDTO.getValues()[i]);
+                st.setObject(i + 1, filterDTO.getValues()[i]);
             }
 
             try (ResultSet result = st.executeQuery()) {
