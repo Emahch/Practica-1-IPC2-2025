@@ -46,15 +46,7 @@ public class EventDB extends DBConnection implements OneKey<Event> {
              ResultSet result = st.executeQuery()) {
 
             while (result.next()) {
-                Event event = new Event();
-                event.setId(result.getString("id"));
-                event.setTitle(result.getString("title"));
-                event.setLocation(result.getString("location"));
-                event.setType(EventTypeEnum.valueOf(result.getString("type")));
-                event.setDate(result.getDate("date").toLocalDate());
-                event.setMaxCapacity(result.getInt("max_capacity"));
-                event.setPrice(result.getDouble("price"));
-                events.add(event);
+                events.add(parseEvent(result));
             }
         }
         if (events.isEmpty()) {
@@ -77,15 +69,7 @@ public class EventDB extends DBConnection implements OneKey<Event> {
 
             try (ResultSet result = st.executeQuery()) {
                 while (result.next()) {
-                    Event event = new Event();
-                    event.setId(result.getString("id"));
-                    event.setTitle(result.getString("title"));
-                    event.setLocation(result.getString("location"));
-                    event.setType(EventTypeEnum.valueOf(result.getString("type")));
-                    event.setDate(result.getDate("date").toLocalDate());
-                    event.setMaxCapacity(result.getInt("max_capacity"));
-                    event.setPrice(result.getDouble("price"));
-                    events.add(event);
+                    events.add(parseEvent(result));
                 }
             }
         }
@@ -104,15 +88,7 @@ public class EventDB extends DBConnection implements OneKey<Event> {
 
             try (ResultSet result = st.executeQuery()) {
                 if (result.next()) {
-                    Event event = new Event();
-                    event.setId(result.getString("id"));
-                    event.setTitle(result.getString("title"));
-                    event.setLocation(result.getString("location"));
-                    event.setType(EventTypeEnum.valueOf(result.getString("type")));
-                    event.setDate(result.getDate("date").toLocalDate());
-                    event.setMaxCapacity(result.getInt("max_capacity"));
-                    event.setPrice(result.getDouble("price"));
-                    return event;
+                    return parseEvent(result);
                 }
             }
         }
@@ -121,8 +97,8 @@ public class EventDB extends DBConnection implements OneKey<Event> {
 
     @Override
     public void updateByKey(Event event, String primaryKey) throws SQLException, NotRowsAffectedException {
-        String query = "UPDATE event SET id = ?, title = ?, date = ?, type = ?, location = ?, max_capacity = ? " +
-                "WHERE id = ?";
+        String query = "UPDATE event SET id = ?, title = ?, date = ?, type = ?, location = ?, max_capacity = ?, " +
+                "price = ? WHERE id = ?";
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, event.getId());
@@ -168,5 +144,17 @@ public class EventDB extends DBConnection implements OneKey<Event> {
             }
             return true;
         }
+    }
+
+    private Event parseEvent(ResultSet result) throws SQLException {
+        Event event = new Event();
+        event.setId(result.getString("id"));
+        event.setTitle(result.getString("title"));
+        event.setLocation(result.getString("location"));
+        event.setType(EventTypeEnum.valueOf(result.getString("type")));
+        event.setDate(result.getDate("date").toLocalDate());
+        event.setMaxCapacity(result.getInt("max_capacity"));
+        event.setPrice(result.getDouble("price"));
+        return event;
     }
 }
