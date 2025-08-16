@@ -57,7 +57,7 @@ public class ActivityService {
         return activityDB.isKeyInUse(activityID);
     }
 
-    public List<Activity> getActivitiesByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Activity> getActivitiesByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return activityDB.findByAttributes(filters);
     }
 
