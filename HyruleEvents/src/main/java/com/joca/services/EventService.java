@@ -53,7 +53,7 @@ public class EventService {
         return eventDB.isKeyInUse(eventID);
     }
 
-    public List<Event> getEventsByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Event> getEventsByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return eventDB.findByAttributes(filters);
     }
 }

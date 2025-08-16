@@ -4,13 +4,14 @@ import com.joca.database.DBConnection;
 import com.joca.database.OneKey;
 import com.joca.model.event.Event;
 import com.joca.model.event.EventTypeEnum;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
 import com.joca.model.filter.FilterDTO;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EventDB extends DBConnection implements OneKey<Event> {
@@ -39,7 +40,7 @@ public class EventDB extends DBConnection implements OneKey<Event> {
     @Override
     public List<Event> findAll() throws SQLException, NotFoundException {
         String query = "SELECT * FROM event";
-        List<Event> events = new ArrayList<>();
+        List<Event> events = new LinkedList<>();
 
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query);
@@ -56,10 +57,10 @@ public class EventDB extends DBConnection implements OneKey<Event> {
     }
 
     @Override
-    public List<Event> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Event> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         String query = "SELECT * FROM event";
         FilterDTO filterDTO = processFilters(filters, query);
-        List<Event> events = new ArrayList<>();
+        List<Event> events = new LinkedList<>();
 
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(filterDTO.getQueryWithFilters())) {

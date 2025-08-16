@@ -1,5 +1,6 @@
 package com.joca.database;
 
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.filter.Filter;
 import com.joca.model.filter.FilterDTO;
 
@@ -18,13 +19,14 @@ public class DBConnection {
         return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
 
-    protected FilterDTO processFilters(List<Filter> filters, String queryWithoutFilters) {
+    protected FilterDTO processFilters(List<Filter> filters, String queryWithoutFilters) throws InvalidRequisitesException {
         StringBuilder sql = new StringBuilder(queryWithoutFilters);
         List<Object> values = new ArrayList<>();
         if (filters != null && !filters.isEmpty()) {
             sql.append(" WHERE ");
             List<String> conditions = new ArrayList<>();
             for (Filter filter : filters) {
+                filter.validate();
                 conditions.add(filter.getColumnName() + " " + filter.getType().getOperator() + " ?");
                 values.add(filter.getValue());
             }

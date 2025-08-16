@@ -2,6 +2,7 @@ package com.joca.services;
 
 import com.joca.database.participant.ParticipantDB;
 import com.joca.model.exceptions.DuplicatedKeyException;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -33,12 +34,12 @@ public class ParticipantService {
         return participantDB.findAll();
     }
 
-    public void updateParticipant(Participant participant, String originalParticipantID) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
-        if (isKeyInUse(participant.getEmail())) {
+    public void updateParticipant(Participant participant, String originalParticipantEmail) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
+        if (isKeyInUse(participant.getEmail()) && !participant.getEmail().equals(originalParticipantEmail)) {
             throw new DuplicatedKeyException("Error al actualizar el participante, el correo : " + participant.getEmail() + " ya esta en uso");
         }
 
-        participantDB.updateByKey(participant, originalParticipantID);
+        participantDB.updateByKey(participant, originalParticipantEmail);
     }
 
     public void deleteParticipant(String participantID) throws SQLException, NotRowsAffectedException {
@@ -49,7 +50,7 @@ public class ParticipantService {
         return participantDB.isKeyInUse(participantID);
     }
 
-    public List<Participant> getParticipantsByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Participant> getParticipantsByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return participantDB.findByAttributes(filters);
     }
 }

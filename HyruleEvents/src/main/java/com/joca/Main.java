@@ -4,6 +4,7 @@ import com.joca.database.event.EventDB;
 import com.joca.model.event.Event;
 import com.joca.model.event.EventTypeEnum;
 import com.joca.model.exceptions.DuplicatedKeyException;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.services.EventService;
 

@@ -3,6 +3,7 @@ package com.joca.database.attendance;
 import com.joca.database.DBConnection;
 import com.joca.database.DoubleKey;
 import com.joca.model.attendance.Attendance;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -105,7 +106,7 @@ public class AttendanceDB extends DBConnection implements DoubleKey<Attendance> 
     }
 
     @Override
-    public List<Attendance> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Attendance> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         String query = "SELECT * FROM participant_activity_attendance";
         List<Attendance> attendances = new ArrayList<>();
         FilterDTO filterDTO = processFilters(filters, query);

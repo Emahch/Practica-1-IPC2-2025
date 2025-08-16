@@ -32,7 +32,7 @@ public class AttendanceService {
         attendanceDB.insert(attendance);
     }
 
-    public Attendance getAttendanceByID(String participantEmail, String activityId) throws SQLException, NotFoundException {
+    public Attendance getAttendanceByID(String participantEmail, String activityId) throws SQLException, NotFoundException, InvalidRequisitesException {
         Filter filterEmail = new Filter("participant_email", participantEmail, FilterTypeEnum.EQUAL);
         Filter filterEvent = new Filter("activity_id", activityId, FilterTypeEnum.EQUAL);
         List<Attendance> attendances = attendanceDB.findByAttributes(List.of(filterEmail, filterEvent));
@@ -61,7 +61,7 @@ public class AttendanceService {
         return attendanceDB.isKeysInUse(participantEmail, activityId);
     }
 
-    public List<Attendance> getAttendancesByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Attendance> getAttendancesByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return attendanceDB.findByAttributes(filters);
     }
 

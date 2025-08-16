@@ -2,6 +2,7 @@ package com.joca.database.registration;
 
 import com.joca.database.DBConnection;
 import com.joca.database.DoubleKey;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -157,7 +158,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
     }
 
     @Override
-    public List<Registration> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Registration> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         String query = "SELECT * FROM participant_event_registration";
         List<Registration> registrations = new ArrayList<>();
         FilterDTO filterDTO = processFilters(filters, query);
