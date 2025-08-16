@@ -108,8 +108,8 @@ public class EventDB extends DBConnection implements OneKey<Event> {
             st.setString(4, event.getType().name());
             st.setString(5, event.getLocation());
             st.setInt(6, event.getMaxCapacity());
-            st.setString(7, primaryKey);
-            st.setDouble(8, event.getPrice());
+            st.setDouble(7, event.getPrice());
+            st.setString(8, primaryKey);
 
             int result = st.executeUpdate();
             if (result == 0) {

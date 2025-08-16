@@ -23,7 +23,7 @@ public class AttendanceService {
 
     public void registerAttendance(Attendance attendance) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, NotFoundException, InvalidRequisitesException {
         if (isKeysInUse(attendance.getParticipantEmail(), attendance.getActivityId())) {
-            throw new DuplicatedKeyException("Error al registrar la asistencia, el participante : "
+            throw new DuplicatedKeyException("Error al registrar la asistencia, el participante: "
                     + attendance.getParticipantEmail() + " ya registro su asistencia en la actividad: " + attendance.getActivityId());
         }
         if (!isAvailableCapacity(attendance.getActivityId())) {

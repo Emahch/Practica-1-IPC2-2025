@@ -17,17 +17,18 @@ public class Main {
     public static void main(String[] args) {
         EventService eventService = new EventService(new EventDB());
         Event event = new Event();
-        event.setId("EVENT_2");
+        event.setId("EVENT_5");
         event.setType(EventTypeEnum.CHARLA);
-        event.setDate(LocalDate.now());
-        event.setTitle("TITULO DEL EVENTO");
-        event.setLocation("Casita");
-        event.setMaxCapacity(40);
+        event.setDate(LocalDate.of(1900,12,12));
+        event.setTitle("EVENTO AC");
+        event.setLocation("U");
+        event.setMaxCapacity(4);
+        event.setPrice(99.45);
         try {
-            eventService.updateEvent(event, "EVENT_2");
+            eventService.updateEvent(event, "EVENT_5");
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } catch (DuplicatedKeyException e) {
+        } catch (InvalidRequisitesException | DuplicatedKeyException e) {
             throw new RuntimeException(e);
         } catch (NotRowsAffectedException e) {
             throw new RuntimeException(e);
