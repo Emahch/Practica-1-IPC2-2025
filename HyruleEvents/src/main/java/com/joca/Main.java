@@ -1,6 +1,5 @@
 package com.joca;
 
-import com.joca.frontend.MainFrame;
 import com.joca.frontend.RegisterSearch;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
