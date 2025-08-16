@@ -123,24 +123,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
              ResultSet result = st.executeQuery()) {
 
             while (result.next()) {
-                Registration registration = new Registration();
-                registration.setParticipantEmail(result.getString("participant_email"));
-                registration.setEventId(result.getString("event_id"));
-                registration.setType(RegistrationTypeEnum.valueOf(result.getString("type")));
-                registration.setStatus(RegistrationStatusEnum.valueOf(result.getString("status")));
-
-                // Extracción de datos de pago
-                Payment payment = new Payment();
-                String posiblePaymentMethod = result.getString("payment_method");
-                payment.setMethod(posiblePaymentMethod == null ? null : PaymentMethodEnum.valueOf(posiblePaymentMethod));
-                payment.setAmount(result.getDouble("payment_amount"));
-                if (posiblePaymentMethod == null) {
-                    registration.setPayment(Optional.empty());
-                } else {
-                    registration.setPayment(Optional.of(payment));
-                }
-
-                registrations.add(registration);
+                registrations.add(parseRegistration(result));
             }
         }
         if (registrations.isEmpty()) {
@@ -163,24 +146,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
 
             try (ResultSet result = st.executeQuery()) {
                 while (result.next()) {
-                    Registration registration = new Registration();
-                    registration.setParticipantEmail(result.getString("participant_email"));
-                    registration.setEventId(result.getString("event_id"));
-                    registration.setType(RegistrationTypeEnum.valueOf(result.getString("type")));
-                    registration.setStatus(RegistrationStatusEnum.valueOf(result.getString("status")));
-
-                    // Extracción de datos de pago
-                    Payment payment = new Payment();
-                    String posiblePaymentMethod = result.getString("payment_method");
-                    payment.setMethod(posiblePaymentMethod == null ? null : PaymentMethodEnum.valueOf(posiblePaymentMethod));
-                    payment.setAmount(result.getDouble("payment_amount"));
-                    if (posiblePaymentMethod == null) {
-                        registration.setPayment(Optional.empty());
-                    } else {
-                        registration.setPayment(Optional.of(payment));
-                    }
-
-                    registrations.add(registration);
+                    registrations.add(parseRegistration(result));
                 }
             }
         }
@@ -191,7 +157,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
     }
 
     public int getRegistrationsQuantity(String eventId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM participant_event_registration WHERE event_id = ?";
+        String query = "SELECT COUNT(*) AS c FROM participant_event_registration WHERE event_id = ?";
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, eventId);
@@ -202,5 +168,25 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
             }
             return 0;
         }
+    }
+
+    private Registration parseRegistration(ResultSet result) throws SQLException {
+        Registration registration = new Registration();
+        registration.setParticipantEmail(result.getString("participant_email"));
+        registration.setEventId(result.getString("event_id"));
+        registration.setType(RegistrationTypeEnum.valueOf(result.getString("type")));
+        registration.setStatus(RegistrationStatusEnum.valueOf(result.getString("status")));
+
+        // Extracción de datos de pago
+        Payment payment = new Payment();
+        String posiblePaymentMethod = result.getString("payment_method");
+        payment.setMethod(posiblePaymentMethod == null ? null : PaymentMethodEnum.valueOf(posiblePaymentMethod));
+        payment.setAmount(result.getDouble("payment_amount"));
+        if (posiblePaymentMethod == null) {
+            registration.setPayment(Optional.empty());
+        } else {
+            registration.setPayment(Optional.of(payment));
+        }
+        return registration;
     }
 }
