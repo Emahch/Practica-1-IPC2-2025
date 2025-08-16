@@ -27,7 +27,7 @@ public class AttendanceService {
                     + attendance.getParticipantEmail() + " ya registro su asistencia en la actividad: " + attendance.getActivityId());
         }
         if (!isAvailableCapacity(attendance.getActivityId())) {
-            throw new InvalidRequisitesException("Error al registrar la asistencia, la actividad ya alcanzó su cupo máximo");
+            throw new InvalidRequisitesException("La actividad ya alcanzó su cupo máximo");
         }
         attendanceDB.insert(attendance);
     }

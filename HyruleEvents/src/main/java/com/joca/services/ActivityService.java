@@ -2,12 +2,18 @@ package com.joca.services;
 
 import com.joca.database.activity.ActivityDB;
 import com.joca.database.event.EventDB;
+import com.joca.database.registration.PaymentValidationDB;
+import com.joca.database.registration.RegistrationDB;
 import com.joca.model.activity.Activity;
 import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
+import com.joca.model.filter.FilterTypeEnum;
+import com.joca.model.participant.Participant;
+import com.joca.model.registration.Registration;
+import com.joca.model.registration.RegistrationTypeEnum;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,15 +25,11 @@ public class ActivityService {
         this.activityDB = activityDB;
     }
 
-    public void createActivity(Activity activity) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
+    public void createActivity(Activity activity) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException, NotFoundException {
         if (isKeyInUse(activity.getId())) {
-            throw new DuplicatedKeyException("Error al crear la actividad, el id : " + activity.getId() + " ya esta en uso");
+            throw new DuplicatedKeyException("Error al crear la actividad, el código para la actividad : " + activity.getId() + " ya esta en uso");
         }
-        EventDB eventDB = new EventDB();
-        if (!eventDB.isKeyInUse(activity.getEventID())) {
-            throw new InvalidRequisitesException("Error al crear la actividad, el evento con id: " + activity.getEventID() + " no existe");
-        }
-        //Pendiente de validación de speaker
+        validateActivity(activity);
         activityDB.insert(activity);
     }
 
@@ -39,15 +41,11 @@ public class ActivityService {
         return activityDB.findAll();
     }
 
-    public void updateActivity(Activity activity, String originalActivityID) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
-        if (isKeyInUse(activity.getId())) {
+    public void updateActivity(Activity activity, String originalActivityID) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException, NotFoundException {
+        if (isKeyInUse(activity.getId()) && !activity.getId().equals(originalActivityID)) {
             throw new DuplicatedKeyException("Error al actualizar la actividad, el id : " + activity.getId() + " ya esta en uso");
         }
-        EventDB eventDB = new EventDB();
-        if (!eventDB.isKeyInUse(activity.getEventID())) {
-            throw new InvalidRequisitesException("Error al actualizar la actividad, el evento con id: " + activity.getEventID() + " no existe");
-        }
-        //Pendiente de validación de speaker
+        validateActivity(activity);
         activityDB.updateByKey(activity, originalActivityID);
     }
 
@@ -61,5 +59,20 @@ public class ActivityService {
 
     public List<Activity> getActivitiesByFilter(List<Filter> filters) throws SQLException, NotFoundException {
         return activityDB.findByAttributes(filters);
+    }
+
+    private void validateActivity(Activity activity) throws SQLException, InvalidRequisitesException, NotFoundException {
+        PaymentValidationDB paymentValidationDB = new PaymentValidationDB();
+        if (!paymentValidationDB.isValidated(activity.getSpeakerEmail(), activity.getEventID())) {
+            throw new InvalidRequisitesException("El participante " + activity.getSpeakerEmail() + " no se encuentra inscrito validamente en el evento " + activity.getEventID());
+        }
+        RegistrationDB registrationDB = new RegistrationDB();
+        List<Registration> registration = registrationDB.findByAttributes(List.of(
+                new Filter("event_id", activity.getEventID(), FilterTypeEnum.EQUAL),
+                new Filter("participant_email", activity.getSpeakerEmail(), FilterTypeEnum.EQUAL)
+        ));
+        if (registration.get(0).getType().equals(RegistrationTypeEnum.ASISTENTE)) {
+            throw new InvalidRequisitesException("El participante " + activity.getSpeakerEmail() + " no se puede ser encargado de la actividad debido a que es 'Asistente'");
+        }
     }
 }

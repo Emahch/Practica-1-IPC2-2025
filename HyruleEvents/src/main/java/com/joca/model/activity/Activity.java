@@ -1,8 +1,17 @@
 package com.joca.model.activity;
 
+import com.joca.model.DBEntity;
+import com.joca.model.event.Event;
+import com.joca.model.exceptions.InvalidRequisitesException;
+import com.joca.model.participant.Participant;
+
 import java.time.LocalTime;
 
-public class Activity {
+public class Activity extends DBEntity {
+
+    public static final int MAX_LENGTH_ID = 20;
+    public static final int MAX_LENGTH_TITLE = 200;
+
     private String id;
     private String eventID;
     private String title;
@@ -77,5 +86,21 @@ public class Activity {
 
     public void setMaxCapacity(int maxCapacity) {
         this.maxCapacity = maxCapacity;
+    }
+
+    @Override
+    public void validate() throws InvalidRequisitesException {
+        validateString(id, MAX_LENGTH_ID, "un código para la actividad");
+        validateString(eventID, Event.MAX_LENGTH_ID, "un código para el evento");
+        validateString(title, MAX_LENGTH_TITLE, "un titulo para la actividad");
+        validateString(speakerEmail, Participant.MAX_LENGTH_EMAIL, "un email para el encargado");
+        validateNull(type, "un tipo de actividad");
+        validateNull(startTime, "una hora de inicio");
+        validateNull(endTime, "una hora de fin");
+        validateInt(maxCapacity, "una capacidad máxima para la actividad", false);
+
+        if (startTime.isAfter(endTime)) {
+            throw new InvalidRequisitesException("La hora de inicio debe estar antes de la hora de fin");
+        }
     }
 }

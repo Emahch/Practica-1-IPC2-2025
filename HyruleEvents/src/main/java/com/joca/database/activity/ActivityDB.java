@@ -4,6 +4,7 @@ import com.joca.database.DBConnection;
 import com.joca.database.OneKey;
 import com.joca.model.activity.Activity;
 import com.joca.model.activity.ActivityTypeEnum;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -142,7 +143,7 @@ public class ActivityDB extends DBConnection implements OneKey<Activity> {
     }
 
     @Override
-    public List<Activity> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Activity> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         String query = "SELECT * FROM activity";
         FilterDTO filterDTO = processFilters(filters, query);
         List<Activity> activities = new ArrayList<>();

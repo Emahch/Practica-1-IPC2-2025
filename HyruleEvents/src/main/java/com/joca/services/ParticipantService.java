@@ -19,7 +19,8 @@ public class ParticipantService {
         this.participantDB = participantDB;
     }
 
-    public void createParticipant(Participant participant) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
+    public void createParticipant(Participant participant) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
+        participant.validate();
         if (isKeyInUse(participant.getEmail())) {
             throw new DuplicatedKeyException("Error al crear el participante, el correo : " + participant.getEmail() + " ya esta en uso");
         }
@@ -34,7 +35,8 @@ public class ParticipantService {
         return participantDB.findAll();
     }
 
-    public void updateParticipant(Participant participant, String originalParticipantEmail) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
+    public void updateParticipant(Participant participant, String originalParticipantEmail) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
+        participant.validate();
         if (isKeyInUse(participant.getEmail()) && !participant.getEmail().equals(originalParticipantEmail)) {
             throw new DuplicatedKeyException("Error al actualizar el participante, el correo : " + participant.getEmail() + " ya esta en uso");
         }
