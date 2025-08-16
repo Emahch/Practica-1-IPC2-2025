@@ -1,10 +1,15 @@
 package com.joca.model.registration;
 
+import com.joca.database.event.EventDB;
+import com.joca.model.DBEntity;
+import com.joca.model.event.Event;
+import com.joca.model.exceptions.InvalidRequisitesException;
+import com.joca.model.participant.Participant;
 import com.joca.model.registration.payment.Payment;
 
 import java.util.Optional;
 
-public class Registration {
+public class Registration extends DBEntity {
     private String participantEmail;
     private String eventId;
     private RegistrationTypeEnum type;
@@ -52,5 +57,15 @@ public class Registration {
 
     public void setStatus(RegistrationStatusEnum status) {
         this.status = status;
+    }
+
+    @Override
+    public void validate() throws InvalidRequisitesException {
+        validateString(participantEmail, Participant.MAX_LENGTH_EMAIL, "un email para el participante");
+        validateString(eventId, Event.MAX_LENGTH_ID, "un código para el evento");
+        validateNull(type, "un tipo de inscripción");
+        if (payment.isPresent()) {
+            payment.get().validate();
+        }
     }
 }

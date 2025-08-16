@@ -3,9 +3,11 @@ package com.joca.services;
 import com.joca.database.event.EventDB;
 import com.joca.model.event.Event;
 import com.joca.model.exceptions.DuplicatedKeyException;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
+import com.joca.model.registration.Registration;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +20,8 @@ public class EventService {
         this.eventDB = eventDB;
     }
 
-    public void createEvent(Event event) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
+    public void createEvent(Event event) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
+        event.validate();
         if (isKeyInUse(event.getId())) {
             throw new DuplicatedKeyException("Error al crear el evento, ya existe un evento con el id: " + event.getId());
         }
@@ -33,8 +36,9 @@ public class EventService {
         return eventDB.findAll();
     }
 
-    public void updateEvent(Event event, String originalEventID) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
-        if (isKeyInUse(event.getId())) {
+    public void updateEvent(Event event, String originalEventID) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
+        event.validate();
+        if (isKeyInUse(event.getId()) && !event.getId().equals(originalEventID)) {
             throw new DuplicatedKeyException("Error al actualizar el evento, ya existe un evento con el id: " + event.getId());
         }
 
@@ -49,7 +53,7 @@ public class EventService {
         return eventDB.isKeyInUse(eventID);
     }
 
-    public List<Event> getEventsByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Event> getEventsByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return eventDB.findByAttributes(filters);
     }
 }

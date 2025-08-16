@@ -23,16 +23,16 @@ public class AttendanceService {
 
     public void registerAttendance(Attendance attendance) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, NotFoundException, InvalidRequisitesException {
         if (isKeysInUse(attendance.getParticipantEmail(), attendance.getActivityId())) {
-            throw new DuplicatedKeyException("Error al registrar la asistencia, el participante : "
+            throw new DuplicatedKeyException("Error al registrar la asistencia, el participante: "
                     + attendance.getParticipantEmail() + " ya registro su asistencia en la actividad: " + attendance.getActivityId());
         }
         if (!isAvailableCapacity(attendance.getActivityId())) {
-            throw new InvalidRequisitesException("Error al registrar la asistencia, la actividad ya alcanzó su cupo máximo");
+            throw new InvalidRequisitesException("La actividad ya alcanzó su cupo máximo");
         }
         attendanceDB.insert(attendance);
     }
 
-    public Attendance getAttendanceByID(String participantEmail, String activityId) throws SQLException, NotFoundException {
+    public Attendance getAttendanceByID(String participantEmail, String activityId) throws SQLException, NotFoundException, InvalidRequisitesException {
         Filter filterEmail = new Filter("participant_email", participantEmail, FilterTypeEnum.EQUAL);
         Filter filterEvent = new Filter("activity_id", activityId, FilterTypeEnum.EQUAL);
         List<Attendance> attendances = attendanceDB.findByAttributes(List.of(filterEmail, filterEvent));
@@ -61,7 +61,7 @@ public class AttendanceService {
         return attendanceDB.isKeysInUse(participantEmail, activityId);
     }
 
-    public List<Attendance> getAttendancesByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Attendance> getAttendancesByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return attendanceDB.findByAttributes(filters);
     }
 

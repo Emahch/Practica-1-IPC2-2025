@@ -1,5 +1,6 @@
 package com.joca.database;
 
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -34,5 +35,5 @@ public interface DBAccess<T> {
      * @return lista de entidades List<T>
      * @throws SQLException si ocurre un error al realizar la operación
      */
-    List<T> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException;
+    List<T> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException;
 }

@@ -2,6 +2,7 @@ package com.joca.database.participant;
 
 import com.joca.database.DBConnection;
 import com.joca.database.OneKey;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -13,7 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ParticipantDB extends DBConnection implements OneKey<Participant> {
@@ -35,7 +36,7 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
                 }
             }
         }
-        throw new NotFoundException("No se encontró el participante con el id: " + primaryKey);
+        throw new NotFoundException("No se encontró el participante con el email: " + primaryKey);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
 
             int result = st.executeUpdate();
             if (result == 0) {
-                throw new NotRowsAffectedException("No se pudo actualizar el participante con id: " + originalKey);
+                throw new NotRowsAffectedException("No se pudo actualizar el participante con email: " + originalKey);
             }
         }
     }
@@ -66,7 +67,7 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
 
             int result = st.executeUpdate();
             if (result == 0) {
-                throw new NotRowsAffectedException("No se pudo eliminar el participante con id: " + primaryKey);
+                throw new NotRowsAffectedException("No se pudo eliminar el participante con email: " + primaryKey);
             }
         }
     }
@@ -107,7 +108,7 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     @Override
     public List<Participant> findAll() throws SQLException, NotFoundException {
         String query = "SELECT * FROM participant";
-        List<Participant> participants = new ArrayList<>();
+        List<Participant> participants = new LinkedList<>();
 
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query);
@@ -129,10 +130,10 @@ public class ParticipantDB extends DBConnection implements OneKey<Participant> {
     }
 
     @Override
-    public List<Participant> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Participant> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         String query = "SELECT * FROM participant";
         FilterDTO filterDTO = processFilters(filters, query);
-        List<Participant> participants = new ArrayList<>();
+        List<Participant> participants = new LinkedList<>();
 
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(filterDTO.getQueryWithFilters())) {

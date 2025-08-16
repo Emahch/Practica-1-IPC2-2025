@@ -23,6 +23,7 @@ public class RegistrationService {
     }
 
     public void createRegistration(Registration registration) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, NotFoundException, InvalidRequisitesException {
+        registration.validate();
         if (isKeysInUse(registration.getParticipantEmail(), registration.getEventId())) {
             throw new DuplicatedKeyException("Error al registrar la inscripción, el participante : "
                     + registration.getParticipantEmail() + " ya se encuentra registrado en el evento: " + registration.getEventId());
@@ -33,7 +34,7 @@ public class RegistrationService {
         registrationDB.insert(registration);
     }
 
-    public Registration getRegistrationByID(String participantEmail, String eventId) throws SQLException, NotFoundException {
+    public Registration getRegistrationByID(String participantEmail, String eventId) throws SQLException, NotFoundException, InvalidRequisitesException {
         Filter filterEmail = new Filter("participant_email", participantEmail, FilterTypeEnum.EQUAL);
         Filter filterEvent = new Filter("event_id", eventId, FilterTypeEnum.EQUAL);
         List<Registration> registrations = registrationDB.findByAttributes(List.of(filterEmail, filterEvent));
@@ -44,7 +45,8 @@ public class RegistrationService {
         return registrationDB.findAll();
     }
 
-    public void updateRegistration(Registration registration, String participantEmail, String eventId) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
+    public void updateRegistration(Registration registration, String participantEmail, String eventId) throws SQLException, DuplicatedKeyException, NotRowsAffectedException, InvalidRequisitesException {
+        registration.validate();
         if (isKeysInUse(registration.getParticipantEmail(), registration.getEventId())
                 && !isSameKey(registration, participantEmail, eventId)) {
             throw new DuplicatedKeyException("Error al actualizar la inscripción, el participante : "
@@ -62,7 +64,7 @@ public class RegistrationService {
         return registrationDB.isKeysInUse(participantEmail, eventId);
     }
 
-    public List<Registration> getRegistrationsByFilter(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Registration> getRegistrationsByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return registrationDB.findByAttributes(filters);
     }
 

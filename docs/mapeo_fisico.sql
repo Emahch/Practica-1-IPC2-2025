@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS `HyruleEvents`.`event` (
   `date` DATE NOT NULL,
   `type` VARCHAR(15) NOT NULL,
   `location` VARCHAR(150) NOT NULL,
-  `max_capacity` INT NOT NULL
+  `max_capacity` INT NOT NULL,
+  `price` DOUBLE NOT NULL
 );
 
 

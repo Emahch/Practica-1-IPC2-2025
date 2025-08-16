@@ -2,6 +2,7 @@ package com.joca.database.registration;
 
 import com.joca.database.DBConnection;
 import com.joca.database.DoubleKey;
+import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
@@ -13,7 +14,7 @@ import com.joca.model.registration.payment.Payment;
 import com.joca.model.registration.payment.PaymentMethodEnum;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,8 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
      * Elimina una inscripción de la base de datos
      *
      * @param participantEmail email del participante
-     * @param eventId          código del evento
-     * @throws SQLException             si ocurre un error al realizar la operación
+     * @param eventId código del evento
+     * @throws SQLException si ocurre un error al realizar la operación
      * @throws NotRowsAffectedException si no se realiza la operación
      */
     @Override
@@ -52,23 +53,15 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
      */
     @Override
     public void updateByKeys(Registration registration, String participantEmail, String eventId) throws SQLException, NotRowsAffectedException {
-        String query = "UPDATE participant_event_registration SET participant_email = ?, event_id = ?, type = ?, payment_method = ? " +
-                "payment_amount = ?, status = ? WHERE participant_email = ? AND event_id = ?";
+        String query = "UPDATE participant_event_registration SET participant_email = ?, event_id = ?, type = ?," +
+                " WHERE participant_email = ? AND event_id = ?";
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, registration.getParticipantEmail());
             st.setString(2, registration.getEventId());
             st.setString(3, registration.getType().name());
-            if (registration.getPayment().isEmpty()) {
-                st.setNull(4, Types.VARCHAR);
-                st.setNull(5, Types.DOUBLE);
-            } else {
-                st.setString(4, registration.getPayment().get().getMethod().name());
-                st.setDouble(5, registration.getPayment().get().getAmount());
-            }
-            st.setString(6, registration.getStatus().name());
-            st.setString(7, participantEmail);
-            st.setString(8, eventId);
+            st.setString(4, participantEmail);
+            st.setString(5, eventId);
 
             int result = st.executeUpdate();
             if (result == 0) {
@@ -123,31 +116,14 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
     @Override
     public List<Registration> findAll() throws SQLException, NotFoundException {
         String query = "SELECT * FROM participant_event_registration";
-        List<Registration> registrations = new ArrayList<>();
+        List<Registration> registrations = new LinkedList<>();
 
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query);
              ResultSet result = st.executeQuery()) {
 
             while (result.next()) {
-                Registration registration = new Registration();
-                registration.setParticipantEmail(result.getString("participant_email"));
-                registration.setEventId(result.getString("event_id"));
-                registration.setType(RegistrationTypeEnum.valueOf(result.getString("type")));
-                registration.setStatus(RegistrationStatusEnum.valueOf(result.getString("status")));
-
-                // Extracción de datos de pago
-                Payment payment = new Payment();
-                String posiblePaymentMethod = result.getString("payment_method");
-                payment.setMethod(posiblePaymentMethod == null ? null : PaymentMethodEnum.valueOf(posiblePaymentMethod));
-                payment.setAmount(result.getDouble("payment_amount"));
-                if (posiblePaymentMethod == null) {
-                    registration.setPayment(Optional.empty());
-                } else {
-                    registration.setPayment(Optional.of(payment));
-                }
-
-                registrations.add(registration);
+                registrations.add(parseRegistration(result));
             }
         }
         if (registrations.isEmpty()) {
@@ -157,9 +133,9 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
     }
 
     @Override
-    public List<Registration> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException {
+    public List<Registration> findByAttributes(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         String query = "SELECT * FROM participant_event_registration";
-        List<Registration> registrations = new ArrayList<>();
+        List<Registration> registrations = new LinkedList<>();
         FilterDTO filterDTO = processFilters(filters, query);
 
         try (Connection connection = connect();
@@ -170,24 +146,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
 
             try (ResultSet result = st.executeQuery()) {
                 while (result.next()) {
-                    Registration registration = new Registration();
-                    registration.setParticipantEmail(result.getString("participant_email"));
-                    registration.setEventId(result.getString("event_id"));
-                    registration.setType(RegistrationTypeEnum.valueOf(result.getString("type")));
-                    registration.setStatus(RegistrationStatusEnum.valueOf(result.getString("status")));
-
-                    // Extracción de datos de pago
-                    Payment payment = new Payment();
-                    String posiblePaymentMethod = result.getString("payment_method");
-                    payment.setMethod(posiblePaymentMethod == null ? null : PaymentMethodEnum.valueOf(posiblePaymentMethod));
-                    payment.setAmount(result.getDouble("payment_amount"));
-                    if (posiblePaymentMethod == null) {
-                        registration.setPayment(Optional.empty());
-                    } else {
-                        registration.setPayment(Optional.of(payment));
-                    }
-
-                    registrations.add(registration);
+                    registrations.add(parseRegistration(result));
                 }
             }
         }
@@ -198,7 +157,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
     }
 
     public int getRegistrationsQuantity(String eventId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM participant_event_registration WHERE event_id = ?";
+        String query = "SELECT COUNT(*) AS c FROM participant_event_registration WHERE event_id = ?";
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, eventId);
@@ -209,5 +168,25 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
             }
             return 0;
         }
+    }
+
+    private Registration parseRegistration(ResultSet result) throws SQLException {
+        Registration registration = new Registration();
+        registration.setParticipantEmail(result.getString("participant_email"));
+        registration.setEventId(result.getString("event_id"));
+        registration.setType(RegistrationTypeEnum.valueOf(result.getString("type")));
+        registration.setStatus(RegistrationStatusEnum.valueOf(result.getString("status")));
+
+        // Extracción de datos de pago
+        Payment payment = new Payment();
+        String posiblePaymentMethod = result.getString("payment_method");
+        payment.setMethod(posiblePaymentMethod == null ? null : PaymentMethodEnum.valueOf(posiblePaymentMethod));
+        payment.setAmount(result.getDouble("payment_amount"));
+        if (posiblePaymentMethod == null) {
+            registration.setPayment(Optional.empty());
+        } else {
+            registration.setPayment(Optional.of(payment));
+        }
+        return registration;
     }
 }

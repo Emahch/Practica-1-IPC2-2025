@@ -1,6 +1,11 @@
 package com.joca.model.registration;
 
-public class ValidationDTO {
+import com.joca.model.DBEntity;
+import com.joca.model.event.Event;
+import com.joca.model.exceptions.InvalidRequisitesException;
+import com.joca.model.participant.Participant;
+
+public class ValidationDTO extends DBEntity {
     private String participantEmail;
     private String eventId;
     private RegistrationStatusEnum status;
@@ -27,5 +32,12 @@ public class ValidationDTO {
 
     public void setStatus(RegistrationStatusEnum status) {
         this.status = status;
+    }
+
+    @Override
+    public void validate() throws InvalidRequisitesException {
+        validateString(participantEmail, Participant.MAX_LENGTH_EMAIL, "un email para el participante");
+        validateString(eventId, Event.MAX_LENGTH_ID, "un código para el evento");
+        validateNull(status, "un estado");
     }
 }
