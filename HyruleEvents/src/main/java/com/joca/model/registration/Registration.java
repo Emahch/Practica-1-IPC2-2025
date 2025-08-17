@@ -10,6 +10,7 @@ import com.joca.model.registration.payment.Payment;
 import java.util.Optional;
 
 public class Registration extends DBEntity {
+
     private String participantEmail;
     private String eventId;
     private RegistrationTypeEnum type;
@@ -68,4 +69,17 @@ public class Registration extends DBEntity {
             payment.get().validate();
         }
     }
+
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            eventId,
+            participantEmail,
+            type.name().toLowerCase(),
+            payment.isPresent() ? payment.get().getMethod().name().toLowerCase() : "No pagado",
+            payment.isPresent() ? String.valueOf(payment.get().getAmount()) : " - - ",
+            status.name().toLowerCase()
+        };
+    }
+
 }

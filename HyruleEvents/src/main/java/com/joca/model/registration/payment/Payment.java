@@ -53,4 +53,14 @@ public class Payment extends DBEntity {
         validateNull(method, "un método de pago");
         validateDouble(amount, "una cantidad", true);
     }
+
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            eventId,
+            participantEmail,
+            method.name().toLowerCase(),
+            String.valueOf(amount)
+        };
+    }
 }

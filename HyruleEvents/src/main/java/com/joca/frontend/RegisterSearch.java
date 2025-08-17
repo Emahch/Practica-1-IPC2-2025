@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class RegisterSearch extends JFrame {
+public class RegisterSearch extends JInternalFrame {
     private JTextField txtBusqueda;
     private JButton btnBuscar, btnNuevo;
     private JTable tablaResultados;
@@ -14,7 +14,6 @@ public class RegisterSearch extends JFrame {
         setTitle("Gestión de Registros");
         setSize(700, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         // Panel superior (barra de búsqueda y botón nuevo)
         JPanel panelSuperior = new JPanel(new BorderLayout(5, 5));

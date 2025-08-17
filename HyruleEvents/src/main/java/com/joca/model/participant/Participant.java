@@ -59,4 +59,14 @@ public class Participant extends DBEntity {
             throw new InvalidRequisitesException("Se debe ingresar un correo electrónico valido");
         }
     }
+    
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            email,
+            name,
+            type.name().toLowerCase(),
+            institution
+        };
+    }
 }

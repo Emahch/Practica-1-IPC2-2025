@@ -2,8 +2,10 @@ package com.joca.model.event;
 
 import com.joca.model.DBEntity;
 import com.joca.model.exceptions.InvalidRequisitesException;
+import java.text.DecimalFormat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Event extends DBEntity {
 
@@ -30,6 +32,18 @@ public class Event extends DBEntity {
     }
 
     public Event() {
+    }
+
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            id,
+            title,
+            location,
+            type.name().toLowerCase(),
+            formatDate(date),
+            String.valueOf(maxCapacity),
+            formatDouble(price)};
     }
 
     @Override

@@ -4,17 +4,36 @@
  */
 package com.joca.frontend.forms;
 
+import com.joca.database.event.EventDB;
+import com.joca.frontend.FramePrincipal;
+import com.joca.frontend.GenericTable;
+import com.joca.model.event.Event;
+import com.joca.model.exceptions.InvalidRequisitesException;
+import com.joca.model.exceptions.NotFoundException;
+import com.joca.model.filter.Filter;
+import com.joca.model.filter.FilterTypeEnum;
+import com.joca.services.EventService;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDesktopPane;
+
 /**
  *
  * @author joca
  */
 public class EventForm extends javax.swing.JInternalFrame {
 
+    private FramePrincipal panePrincipal;
+    
     /**
      * Creates new form EventForm
      */
-    public EventForm() {
+    public EventForm(FramePrincipal pane) {
         initComponents();
+        this.panePrincipal = pane;
     }
 
     /**
@@ -26,21 +45,102 @@ public class EventForm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        searchBar = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+        newButton = new javax.swing.JButton();
+        idLabel = new javax.swing.JLabel();
+
+        setClosable(true);
+        setForeground(java.awt.Color.white);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Eventos");
+        setMinimumSize(new java.awt.Dimension(250, 50));
+
+        searchButton.setText("Buscar");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+
+        newButton.setText("Nuevo Evento");
+        newButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
+
+        idLabel.setText("Buscar por código");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(idLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchBar, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(newButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(newButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton)
+                    .addComponent(idLabel))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        EventService eventService = new EventService(new EventDB());
+        try {
+            Optional<Filter> filter = getFilter();
+            List<Event> events;
+            if (filter.isEmpty()) {
+                events = eventService.getAllEvents();
+            } else {
+                events = eventService.getEventsByFilter(List.of(filter.get()));
+            }
+            GenericTable genericTable = new GenericTable(List.copyOf(events), GenericTable.EVENT_MODEL, "Eventos encontrados");
+            panePrincipal.openNewWindow(genericTable);
+            panePrincipal.printOnLog( events.size() + " Eventos encontrados.");
+        } catch (InvalidRequisitesException | NotFoundException | SQLException e) {
+            panePrincipal.printOnLog(e.getMessage());
+        }
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newButtonActionPerformed
+
+    private Optional<Filter> getFilter() {
+        if (searchBar.getText().isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.of(new Filter("id", searchBar.getText(), FilterTypeEnum.EQUAL));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel idLabel;
+    private javax.swing.JButton newButton;
+    private javax.swing.JTextField searchBar;
+    private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
 }

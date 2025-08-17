@@ -103,4 +103,18 @@ public class Activity extends DBEntity {
             throw new InvalidRequisitesException("La hora de inicio debe estar antes de la hora de fin");
         }
     }
+
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            id,
+            eventID,
+            title,
+            type.name().toLowerCase(),
+            speakerEmail,
+            formatTime(startTime),
+            formatTime(endTime),
+            String.valueOf(maxCapacity)
+        };
+    }
 }

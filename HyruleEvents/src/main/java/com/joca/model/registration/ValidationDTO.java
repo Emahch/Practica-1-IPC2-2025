@@ -40,4 +40,13 @@ public class ValidationDTO extends DBEntity {
         validateString(eventId, Event.MAX_LENGTH_ID, "un código para el evento");
         validateNull(status, "un estado");
     }
+
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            eventId,
+            participantEmail,
+            status.name().toLowerCase()
+        };
+    }
 }

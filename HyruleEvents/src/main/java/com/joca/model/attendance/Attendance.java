@@ -38,4 +38,12 @@ public class Attendance extends DBEntity {
         validateString(participantEmail, Participant.MAX_LENGTH_EMAIL, "un email para el participante");
         validateString(activityId, Activity.MAX_LENGTH_ID, "un código para la actividad");
     }
+
+    @Override
+    public String[] getAsRow() {
+        return new String[]{
+            activityId,
+            participantEmail
+        };
+    }
 }

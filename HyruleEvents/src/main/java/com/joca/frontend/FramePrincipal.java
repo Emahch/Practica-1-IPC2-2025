@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.joca.frontend;
+
+import com.joca.frontend.forms.EventForm;
+import java.beans.PropertyVetoException;
+import javax.swing.JInternalFrame;
 
 /**
  *
@@ -10,11 +10,16 @@ package com.joca.frontend;
  */
 public class FramePrincipal extends javax.swing.JFrame {
 
+    private LogPrinter logPrinter;
+
     /**
      * Creates new form FramePrincipal
      */
     public FramePrincipal() {
         initComponents();
+        setLocationRelativeTo(null);
+        logPrinter = new LogPrinter();
+        panePrincipal.add(logPrinter);
     }
 
     /**
@@ -48,11 +53,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         panePrincipal.setLayout(panePrincipalLayout);
         panePrincipalLayout.setHorizontalGroup(
             panePrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 682, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         panePrincipalLayout.setVerticalGroup(
             panePrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 403, Short.MAX_VALUE)
+            .addGap(0, 576, Short.MAX_VALUE)
         );
 
         fileMenu.setText("Archivo");
@@ -159,12 +164,28 @@ public class FramePrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void openNewWindow(JInternalFrame internalFrame) {
+        internalFrame.setLocation(
+                (int) (Math.random() * 200),
+                (int) (Math.random() * 200)
+        );
+        internalFrame.setVisible(true);
+
+        panePrincipal.add(internalFrame);
+        try {
+            internalFrame.setSelected(true);
+        } catch (java.beans.PropertyVetoException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void loadFileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFileMenuActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_loadFileMenuActionPerformed
 
     private void eventsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsMenuActionPerformed
-        // TODO add your handling code here:
+        EventForm eventForm = new EventForm(this);
+        openNewWindow(eventForm);
     }//GEN-LAST:event_eventsMenuActionPerformed
 
     private void participantsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_participantsMenuActionPerformed
@@ -188,13 +209,23 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_paymentMenuActionPerformed
 
     private void validationsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validationsMenuActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_validationsMenuActionPerformed
 
     private void consoleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consoleMenuActionPerformed
-        System.out.println("sss");
+        if (logPrinter.isIcon()) {
+            try {
+                logPrinter.setIcon(false);
+            } catch (PropertyVetoException ex) {
+                ex.printStackTrace();
+            }
+        }
+        logPrinter.setVisible(true);
     }//GEN-LAST:event_consoleMenuActionPerformed
 
+    public void printOnLog(String message) {
+        logPrinter.insertLine(message);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu actionsMenu;
