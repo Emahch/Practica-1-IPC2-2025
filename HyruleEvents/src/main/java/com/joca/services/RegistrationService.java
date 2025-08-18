@@ -1,6 +1,7 @@
 package com.joca.services;
 
 import com.joca.database.event.EventDB;
+import com.joca.database.participant.ParticipantDB;
 import com.joca.database.registration.RegistrationDB;
 import com.joca.model.event.Event;
 import com.joca.model.exceptions.DuplicatedKeyException;
@@ -29,7 +30,11 @@ public class RegistrationService {
                     + registration.getParticipantEmail() + " ya se encuentra registrado en el evento: " + registration.getEventId());
         }
         if (!isAvailableCapacity(registration.getEventId())) {
-            throw new InvalidRequisitesException("Error al registrar la inscripción, el evento ya alcanzó su cupo máximo");
+            throw new InvalidRequisitesException("El evento ya alcanzó su cupo máximo");
+        }
+        ParticipantService participantService = new ParticipantService(new ParticipantDB());
+        if (!participantService.isKeyInUse(registration.getParticipantEmail())) {
+            throw new InvalidRequisitesException("No se encontró un participante con email " + registration.getParticipantEmail());
         }
         registrationDB.insert(registration);
     }
@@ -52,7 +57,10 @@ public class RegistrationService {
             throw new DuplicatedKeyException("Error al actualizar la inscripción, el participante : "
                     + registration.getParticipantEmail() + " ya se encuentra registrado en el evento: " + registration.getEventId());
         }
-
+        ParticipantService participantService = new ParticipantService(new ParticipantDB());
+        if (!participantService.isKeyInUse(registration.getParticipantEmail())) {
+            throw new InvalidRequisitesException("No se encontró un participante con email " + registration.getParticipantEmail());
+        }
         registrationDB.updateByKeys(registration, participantEmail, eventId);
     }
 

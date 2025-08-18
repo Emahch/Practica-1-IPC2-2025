@@ -53,7 +53,7 @@ public class RegistrationDB extends DBConnection implements DoubleKey<Registrati
      */
     @Override
     public void updateByKeys(Registration registration, String participantEmail, String eventId) throws SQLException, NotRowsAffectedException {
-        String query = "UPDATE participant_event_registration SET participant_email = ?, event_id = ?, type = ?," +
+        String query = "UPDATE participant_event_registration SET participant_email = ?, event_id = ?, type = ?" +
                 " WHERE participant_email = ? AND event_id = ?";
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query)) {

@@ -1,6 +1,5 @@
 package com.joca.model.registration;
 
-import com.joca.database.event.EventDB;
 import com.joca.model.DBEntity;
 import com.joca.model.event.Event;
 import com.joca.model.exceptions.InvalidRequisitesException;
@@ -18,6 +17,7 @@ public class Registration extends DBEntity {
     private RegistrationStatusEnum status;
 
     public Registration() {
+        payment = Optional.empty();
     }
 
     public String getParticipantEmail() {
@@ -65,7 +65,7 @@ public class Registration extends DBEntity {
         validateString(participantEmail, Participant.MAX_LENGTH_EMAIL, "un email para el participante");
         validateString(eventId, Event.MAX_LENGTH_ID, "un código para el evento");
         validateNull(type, "un tipo de inscripción");
-        if (payment.isPresent()) {
+        if (!payment.isEmpty()) {
             payment.get().validate();
         }
     }
@@ -76,8 +76,8 @@ public class Registration extends DBEntity {
             eventId,
             participantEmail,
             type.name().toLowerCase(),
-            payment.isPresent() ? payment.get().getMethod().name().toLowerCase() : "No pagado",
-            payment.isPresent() ? String.valueOf(payment.get().getAmount()) : " - - ",
+            !payment.isEmpty() ? payment.get().getMethod().name().toLowerCase() : "No pagado",
+            !payment.isEmpty() ? String.valueOf(payment.get().getAmount()) : " - - ",
             status.name().toLowerCase()
         };
     }
