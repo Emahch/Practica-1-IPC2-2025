@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <Properties>
+    <Property name="closable" type="boolean" value="true"/>
+    <Property name="iconifiable" type="boolean" value="true"/>
+    <Property name="maximizable" type="boolean" value="true"/>
+    <Property name="resizable" type="boolean" value="true"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="labelResult" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="updateButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="maxCapacityLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="locationLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="typeLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="titleLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="idLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="priceLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="titleTxt" max="32767" attributes="0"/>
+                          <Component id="locationTxt" max="32767" attributes="0"/>
+                          <Component id="idTxt" max="32767" attributes="0"/>
+                          <Component id="typeComboBox" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
+                              <Component id="labelDay" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="spinnerDay" min="-2" pref="59" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="labelMonth" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="spinnerMonth" min="-2" pref="61" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="labelYear" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="spinnerYear" min="-2" pref="73" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="spinnerPrice" alignment="0" max="32767" attributes="0"/>
+                          <Component id="spinnerMaxCapacity" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="idLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="titleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="titleTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="dateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spinnerYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spinnerDay" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spinnerMonth" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelDay" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelMonth" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelYear" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="typeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="typeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="locationTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="locationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="maxCapacityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spinnerMaxCapacity" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="priceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spinnerPrice" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="updateButton" max="32767" attributes="0"/>
+                  <Component id="labelResult" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="idLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="C&#xf3;digo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="idTxt">
+      <Events>
+        <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="idTxtCaretUpdate"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="titleLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Titulo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="dateLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Fecha"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="typeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tipo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="maxCapacityLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Capacidad m&#xe1;xima"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="priceLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Precio"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="locationLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ubicaci&#xf3;n"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="titleTxt">
+    </Component>
+    <Component class="javax.swing.JTextField" name="locationTxt">
+    </Component>
+    <Component class="javax.swing.JButton" name="updateButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Crear"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spinnerYear">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="2025" maximum="2100" minimum="2000" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="typeComboBox">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spinnerDay">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="1" maximum="31" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spinnerMonth">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="1" maximum="12" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelDay">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Dia"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelMonth">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mes"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelYear">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A&#xf1;o"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spinnerPrice">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spinnerMaxCapacity">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelResult">
+    </Component>
+  </SubComponents>
+</Form>

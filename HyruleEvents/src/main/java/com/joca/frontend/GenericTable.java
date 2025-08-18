@@ -5,7 +5,6 @@
 package com.joca.frontend;
 
 import com.joca.model.DBEntity;
-import com.joca.model.event.Event;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,9 +15,9 @@ import javax.swing.table.DefaultTableModel;
 public class GenericTable extends javax.swing.JInternalFrame {
 
     private DefaultTableModel model;
-    
+
     public static final String[] EVENT_MODEL = {"Código", "Titulo", "Ubicación", "Tipo", "Fecha", "Capacidad", "Precio"};
-    
+
     /**
      * Creates new form LogPrinter
      */
@@ -26,14 +25,14 @@ public class GenericTable extends javax.swing.JInternalFrame {
         initComponents();
         setTitle(title);
         model = new DefaultTableModel(MODEL, 0);
-        canvas.setModel(model);
-        canvas.setDefaultEditor(Object.class, null);
+        table.setModel(model);
+        table.setDefaultEditor(Object.class, null);
         insertRows(entities);
     }
-    
-    private void insertRows(List<DBEntity> entities){
+
+    private void insertRows(List<DBEntity> entities) {
         for (DBEntity entity : entities) {
-            model.addRow(entity.getAsRow());        
+            model.addRow(entity.getAsRow());
         }
     }
 
@@ -47,7 +46,7 @@ public class GenericTable extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        canvas = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
         setClosable(true);
         setForeground(java.awt.Color.white);
@@ -59,9 +58,9 @@ public class GenericTable extends javax.swing.JInternalFrame {
         jScrollPane1.setBorder(null);
         jScrollPane1.setAutoscrolls(true);
 
-        canvas.setAutoCreateRowSorter(true);
-        canvas.setForeground(new java.awt.Color(255, 255, 255));
-        canvas.setModel(new javax.swing.table.DefaultTableModel(
+        table.setAutoCreateRowSorter(true);
+        table.setForeground(new java.awt.Color(255, 255, 255));
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -72,11 +71,11 @@ public class GenericTable extends javax.swing.JInternalFrame {
 
             }
         ));
-        canvas.setGridColor(new java.awt.Color(255, 255, 255));
-        canvas.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        canvas.setSelectionForeground(new java.awt.Color(51, 51, 51));
-        canvas.setShowHorizontalLines(true);
-        jScrollPane1.setViewportView(canvas);
+        table.setGridColor(new java.awt.Color(255, 255, 255));
+        table.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        table.setSelectionForeground(new java.awt.Color(51, 51, 51));
+        table.setShowHorizontalLines(true);
+        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,7 +95,7 @@ public class GenericTable extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable canvas;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

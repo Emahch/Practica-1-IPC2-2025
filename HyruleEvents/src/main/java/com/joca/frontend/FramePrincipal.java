@@ -1,6 +1,6 @@
 package com.joca.frontend;
 
-import com.joca.frontend.forms.EventForm;
+import com.joca.frontend.events.EventActionsForm;
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
 
@@ -184,7 +184,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_loadFileMenuActionPerformed
 
     private void eventsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsMenuActionPerformed
-        EventForm eventForm = new EventForm(this);
+        EventActionsForm eventForm = new EventActionsForm(this);
         openNewWindow(eventForm);
     }//GEN-LAST:event_eventsMenuActionPerformed
 

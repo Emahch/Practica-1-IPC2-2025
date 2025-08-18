@@ -7,7 +7,6 @@ import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
-import com.joca.model.registration.Registration;
 
 import java.sql.SQLException;
 import java.util.List;
