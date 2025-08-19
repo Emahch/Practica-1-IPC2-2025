@@ -61,7 +61,7 @@ public class ActivityReportForm extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Reporte de participantes");
+        setTitle("Reporte de actividades");
         setMinimumSize(new java.awt.Dimension(350, 210));
         setPreferredSize(new java.awt.Dimension(470, 215));
 
