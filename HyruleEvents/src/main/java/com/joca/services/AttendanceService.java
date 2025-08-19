@@ -2,6 +2,7 @@ package com.joca.services;
 
 import com.joca.database.activity.ActivityDB;
 import com.joca.database.attendance.AttendanceDB;
+import com.joca.database.registration.PaymentValidationDB;
 import com.joca.model.activity.Activity;
 import com.joca.model.attendance.Attendance;
 import com.joca.model.exceptions.DuplicatedKeyException;
@@ -10,6 +11,8 @@ import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.filter.Filter;
 import com.joca.model.filter.FilterTypeEnum;
+import com.joca.model.registration.RegistrationStatusEnum;
+import com.joca.model.registration.ValidationDTO;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -29,6 +32,13 @@ public class AttendanceService {
         if (!isAvailableCapacity(attendance.getActivityId())) {
             throw new InvalidRequisitesException("La actividad ya alcanzó su cupo máximo");
         }
+        ActivityDB activityDB = new ActivityDB();
+        Activity activity = activityDB.findByKey(attendance.getActivityId());
+        PaymentValidationService validationService = new PaymentValidationService(new PaymentValidationDB());
+        ValidationDTO validation = validationService.getValidationStatus(attendance.getParticipantEmail(), activity.getEventID());
+        if (!validation.getStatus().equals(RegistrationStatusEnum.VALIDADA)) {
+            throw new InvalidRequisitesException("El participante " + attendance.getParticipantEmail() + " no se encuentra inscrito validamente en el evento de la activida");
+        }
         attendanceDB.insert(attendance);
     }
 
@@ -43,16 +53,6 @@ public class AttendanceService {
         return attendanceDB.findAll();
     }
 
-    public void updateAttendance(Attendance attendance, String participantEmail, String activityId) throws SQLException, DuplicatedKeyException, NotRowsAffectedException {
-        if (isKeysInUse(attendance.getParticipantEmail(), attendance.getActivityId())
-                && !isSameKey(attendance, participantEmail, activityId)) {
-            throw new DuplicatedKeyException("Error al actualizar la asistencia, el participante : "
-                    + attendance.getParticipantEmail() + " ya registro su asistencia en la actividad: " + attendance.getActivityId());
-        }
-
-        attendanceDB.updateByKeys(attendance, participantEmail, activityId);
-    }
-
     public void deleteAttendance(String participantEmail, String activityId) throws SQLException, NotRowsAffectedException {
         attendanceDB.deleteByKeys(participantEmail, activityId);
     }
@@ -63,10 +63,6 @@ public class AttendanceService {
 
     public List<Attendance> getAttendancesByFilter(List<Filter> filters) throws SQLException, NotFoundException, InvalidRequisitesException {
         return attendanceDB.findByAttributes(filters);
-    }
-
-    private boolean isSameKey(Attendance attendance, String oldEmail, String oldId) {
-        return attendance.getParticipantEmail().equals(oldEmail) && attendance.getActivityId().equals(oldId);
     }
 
     public boolean isAvailableCapacity(String activityId) throws SQLException, NotFoundException {

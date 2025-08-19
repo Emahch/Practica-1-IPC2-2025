@@ -1,6 +1,7 @@
 package com.joca.frontend;
 
 import com.joca.frontend.activities.ActivityActionForm;
+import com.joca.frontend.attendance.AttendanceActionForm;
 import com.joca.frontend.events.EventActionsForm;
 import com.joca.frontend.participant.ParticipantActionsForm;
 import com.joca.frontend.payments.payment.PaymentActionForm;
@@ -179,7 +180,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         panePrincipal.add(internalFrame);
         try {
             internalFrame.setSelected(true);
-        } catch (java.beans.PropertyVetoException ex) {
+        } catch (PropertyVetoException ex) {
             ex.printStackTrace();
         }
     }
@@ -204,7 +205,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_activitiesMenuActionPerformed
 
     private void attendanceMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attendanceMenuActionPerformed
-        // TODO add your handling code here:
+        AttendanceActionForm actionForm = new AttendanceActionForm(this);
+        openNewWindow(actionForm);
     }//GEN-LAST:event_attendanceMenuActionPerformed
 
     private void registrationsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrationsMenuItemActionPerformed
