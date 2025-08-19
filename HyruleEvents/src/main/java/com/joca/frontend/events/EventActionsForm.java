@@ -206,7 +206,16 @@ public class EventActionsForm extends javax.swing.JInternalFrame {
                 framePrincipal.printOnLog("Evento con código " + id + " eliminado con éxito");
                 JOptionPane.showMessageDialog(this, "Evento con código " + id + " eliminado con éxito");
             }
-        } catch (NotRowsAffectedException | SQLException ex) {
+        } catch (SQLException ex) {
+            String message;
+            if (ex.getErrorCode() == 1451) {
+                message = "Error al intentar eliminar el evento: el evento se encuentra en uso en otros registros";
+            } else {
+                message = "Error al intentar eliminar el evento - codigo de error " + ex.getErrorCode();
+            }
+            JOptionPane.showMessageDialog(this, message);
+            framePrincipal.printOnLog(message);
+        } catch (NotRowsAffectedException ex) {
             framePrincipal.printOnLog("Error al intentar eliminar el evento - " + ex.getMessage());
         }
     }//GEN-LAST:event_deleteButtonActionPerformed

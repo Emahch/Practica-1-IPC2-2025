@@ -2,6 +2,7 @@ package com.joca.frontend;
 
 import com.joca.frontend.events.EventActionsForm;
 import com.joca.frontend.participant.ParticipantActionsForm;
+import com.joca.frontend.payments.payment.PaymentActionForm;
 import com.joca.frontend.registrations.RegistrationActionsForm;
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
@@ -209,7 +210,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_registrationsMenuItemActionPerformed
 
     private void paymentMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentMenuActionPerformed
-        // TODO add your handling code here:
+        PaymentActionForm actionForm = new PaymentActionForm(this);
+        openNewWindow(actionForm);
     }//GEN-LAST:event_paymentMenuActionPerformed
 
     private void validationsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validationsMenuActionPerformed

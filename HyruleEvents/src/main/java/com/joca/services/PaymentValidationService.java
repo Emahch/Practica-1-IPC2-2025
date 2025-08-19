@@ -10,7 +10,6 @@ import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.registration.RegistrationStatusEnum;
 import com.joca.model.registration.ValidationDTO;
 import com.joca.model.registration.payment.Payment;
-import com.joca.model.registration.payment.PaymentMethodEnum;
 
 import java.sql.SQLException;
 import java.util.Optional;

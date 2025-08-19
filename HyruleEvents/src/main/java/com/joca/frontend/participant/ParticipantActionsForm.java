@@ -206,7 +206,16 @@ public class ParticipantActionsForm extends javax.swing.JInternalFrame {
                 framePrincipal.printOnLog("Participante con email " + email + " eliminado con éxito");
                 JOptionPane.showMessageDialog(this, "Participante con email " + email + " eliminado con éxito");
             }
-        } catch (NotRowsAffectedException | SQLException ex) {
+        } catch (SQLException ex) {
+            String message;
+            if (ex.getErrorCode() == 1451) {
+                message = "Error al intentar eliminar el participante: el participante se encuentra en uso en otros registros";
+            } else {
+                message = "Error al intentar eliminar el participante - codigo de error " + ex.getErrorCode();
+            }
+            JOptionPane.showMessageDialog(this, message);
+            framePrincipal.printOnLog(message);
+        } catch (NotRowsAffectedException ex) {
             framePrincipal.printOnLog("Error al intentar eliminar el participante - " + ex.getMessage());
         }
     }//GEN-LAST:event_deleteButtonActionPerformed

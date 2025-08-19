@@ -6,7 +6,7 @@ package com.joca.model;
  */
 public enum UpdateTypeEnum {
     CREAR("Crear", "creado"),
-    ACTUALIZAR("Editar", "actualizado");
+    ACTUALIZAR("Actualizar", "actualizado");
     
     private String titleName;
     private String updateMessage;

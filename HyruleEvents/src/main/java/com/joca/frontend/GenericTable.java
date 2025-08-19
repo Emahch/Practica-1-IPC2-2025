@@ -19,6 +19,7 @@ public class GenericTable extends javax.swing.JInternalFrame {
     public static final String[] EVENT_MODEL = {"Código", "Titulo", "Ubicación", "Tipo", "Fecha", "Capacidad", "Precio"};
     public static final String[] PARTICIPANT_MODEL = {"Email", "Nombre", "Tipo", "Institución"};
     public static final String[] REGISTRATION_MODEL = {"Evento", "Email participante", "Tipo", "Método de pago", "Monto", "Estado"};
+    public static final String[] PAYMENT_MODEL = {"Código de Evento", "Email participante", "Método de pago", "Monto"};
 
     /**
      * Creates new form LogPrinter

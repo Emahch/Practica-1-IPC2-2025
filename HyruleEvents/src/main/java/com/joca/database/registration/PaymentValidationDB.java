@@ -42,7 +42,7 @@ public class PaymentValidationDB extends DBConnection {
 
     public void updatePayment(Payment payment) throws SQLException, NotRowsAffectedException {
         String query = "UPDATE participant_event_registration SET payment_method = ?, " +
-                "payment_amount = ? WHERE participant_email = ? AND event_id = ?";
+                "payment_amount = ?, status = ? WHERE participant_email = ? AND event_id = ?";
         try (Connection connection = connect();
              PreparedStatement st = connection.prepareStatement(query)) {
             if (payment.getMethod() == null) {
@@ -52,8 +52,9 @@ public class PaymentValidationDB extends DBConnection {
                 st.setString(1, payment.getMethod().name());
                 st.setDouble(2, payment.getAmount());
             }
-            st.setString(3, payment.getParticipantEmail());
-            st.setString(4, payment.getEventId());
+            st.setString(3, RegistrationStatusEnum.PENDIENTE.name());
+            st.setString(4, payment.getParticipantEmail());
+            st.setString(5, payment.getEventId());
 
             int result = st.executeUpdate();
             if (result == 0) {
