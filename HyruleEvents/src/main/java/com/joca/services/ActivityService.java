@@ -5,6 +5,7 @@ import com.joca.database.event.EventDB;
 import com.joca.database.registration.PaymentValidationDB;
 import com.joca.database.registration.RegistrationDB;
 import com.joca.model.activity.Activity;
+import com.joca.model.event.Event;
 import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.InvalidRequisitesException;
 import com.joca.model.exceptions.NotFoundException;
@@ -72,7 +73,12 @@ public class ActivityService {
                 new Filter("participant_email", activity.getSpeakerEmail(), FilterTypeEnum.EQUAL)
         ));
         if (registration.get(0).getType().equals(RegistrationTypeEnum.ASISTENTE)) {
-            throw new InvalidRequisitesException("El participante " + activity.getSpeakerEmail() + " no se puede ser encargado de la actividad debido a que es 'Asistente'");
+            throw new InvalidRequisitesException("El participante " + activity.getSpeakerEmail() + " no puede ser encargado de la actividad debido a que es 'Asistente'");
+        }
+        EventDB eventDB = new EventDB();
+        Event event = eventDB.findByKey(activity.getEventID());
+        if (event.getMaxCapacity() < activity.getMaxCapacity()) {
+            throw new InvalidRequisitesException("La capacidad máxima de la actividad no puede ser mayor a la del evento");
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.joca.frontend;
 
+import com.joca.frontend.activities.ActivityActionForm;
 import com.joca.frontend.events.EventActionsForm;
 import com.joca.frontend.participant.ParticipantActionsForm;
 import com.joca.frontend.payments.payment.PaymentActionForm;
@@ -198,7 +199,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_participantsMenuActionPerformed
 
     private void activitiesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activitiesMenuActionPerformed
-        // TODO add your handling code here:
+        ActivityActionForm actionForm = new ActivityActionForm(this);
+        openNewWindow(actionForm);
     }//GEN-LAST:event_activitiesMenuActionPerformed
 
     private void attendanceMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attendanceMenuActionPerformed

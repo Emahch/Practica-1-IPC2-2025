@@ -55,7 +55,7 @@ public class ValidationActionForm extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Pagos");
+        setTitle("Validaciones");
         setMinimumSize(new java.awt.Dimension(350, 140));
         setPreferredSize(new java.awt.Dimension(350, 150));
 
