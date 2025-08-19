@@ -4,6 +4,7 @@ import com.joca.frontend.events.EventActionsForm;
 import com.joca.frontend.participant.ParticipantActionsForm;
 import com.joca.frontend.payments.payment.PaymentActionForm;
 import com.joca.frontend.registrations.RegistrationActionsForm;
+import com.joca.frontend.registrations.validations.ValidationActionForm;
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
 
@@ -215,7 +216,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_paymentMenuActionPerformed
 
     private void validationsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validationsMenuActionPerformed
-        
+        ValidationActionForm actionForm = new ValidationActionForm(this);
+        openNewWindow(actionForm);
     }//GEN-LAST:event_validationsMenuActionPerformed
 
     private void consoleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consoleMenuActionPerformed

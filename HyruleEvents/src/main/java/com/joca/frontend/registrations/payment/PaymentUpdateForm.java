@@ -4,9 +4,11 @@
  */
 package com.joca.frontend.registrations.payment;
 
+import com.joca.database.event.EventDB;
 import com.joca.database.registration.PaymentValidationDB;
 import com.joca.frontend.FramePrincipal;
 import com.joca.model.UpdateTypeEnum;
+import com.joca.model.event.Event;
 import com.joca.model.exceptions.DuplicatedKeyException;
 import com.joca.model.exceptions.InvalidFormatException;
 import com.joca.model.exceptions.InvalidRequisitesException;
@@ -14,6 +16,7 @@ import com.joca.model.exceptions.NotFoundException;
 import com.joca.model.exceptions.NotRowsAffectedException;
 import com.joca.model.registration.payment.Payment;
 import com.joca.model.registration.payment.PaymentMethodEnum;
+import com.joca.services.EventService;
 import com.joca.services.PaymentValidationService;
 import java.awt.Color;
 import java.sql.SQLException;
@@ -45,6 +48,17 @@ public class PaymentUpdateForm extends javax.swing.JInternalFrame {
         updateButton.setText(type.getTitleName());
         methodComboBox.setModel(new DefaultComboBoxModel(PaymentMethodEnum.values()));
         setPayment();
+        setRequiredAmount();
+    }
+    
+    private void setRequiredAmount() {
+        EventService eventService = new EventService(new EventDB());
+        try {
+            Event event = eventService.getEventByID(payment.getEventId());
+            requiredAmount.setText(String.valueOf(event.getPrice()));
+        } catch (NotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setPayment() {
@@ -77,6 +91,8 @@ public class PaymentUpdateForm extends javax.swing.JInternalFrame {
         paymentAmountTxt = new javax.swing.JTextField();
         paymentAmountLabel = new javax.swing.JLabel();
         methodComboBox = new javax.swing.JComboBox<>();
+        requiredLabel = new javax.swing.JLabel();
+        requiredAmount = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -114,6 +130,8 @@ public class PaymentUpdateForm extends javax.swing.JInternalFrame {
 
         paymentAmountLabel.setText("Monto de pago");
 
+        requiredLabel.setText("Mínimo:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,7 +149,12 @@ public class PaymentUpdateForm extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(emailTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
                             .addComponent(eventIdTxt)
-                            .addComponent(paymentAmountTxt)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(paymentAmountTxt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(requiredLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(requiredAmount))
                             .addComponent(methodComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -158,7 +181,9 @@ public class PaymentUpdateForm extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(paymentAmountLabel)
-                    .addComponent(paymentAmountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(paymentAmountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(requiredLabel)
+                    .addComponent(requiredAmount))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(updateButton)
@@ -240,6 +265,8 @@ public class PaymentUpdateForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel paymentAmountLabel;
     private javax.swing.JTextField paymentAmountTxt;
     private javax.swing.JLabel paymentMethodLabel;
+    private javax.swing.JLabel requiredAmount;
+    private javax.swing.JLabel requiredLabel;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -34,7 +34,7 @@ public class PaymentValidationService {
             Event event = eventService.getEventByID(validationDTO.getEventId());
             if (payment.getAmount() < event.getPrice()) {
                 throw new InvalidRequisitesException("No se puede validar la inscripción de " + validationDTO.getParticipantEmail() + " en el " +
-                        "evento " + validationDTO.getEventId() + ". El pago no esta completo");
+                        "evento " + validationDTO.getEventId() + ". El pago no cumple con lo mínimo requerido");
             }
         }
         paymentValidationDB.updateValidation(validationDTO);

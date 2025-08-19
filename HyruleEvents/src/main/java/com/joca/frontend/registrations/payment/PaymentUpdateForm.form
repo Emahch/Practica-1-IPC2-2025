@@ -39,7 +39,13 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="emailTxt" pref="363" max="32767" attributes="0"/>
                           <Component id="eventIdTxt" max="32767" attributes="0"/>
-                          <Component id="paymentAmountTxt" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="paymentAmountTxt" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="requiredLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="requiredAmount" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="methodComboBox" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -76,6 +82,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="paymentAmountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="paymentAmountTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="requiredLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="requiredAmount" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -150,6 +158,13 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="requiredLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="M&#xed;nimo:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="requiredAmount">
     </Component>
   </SubComponents>
 </Form>
