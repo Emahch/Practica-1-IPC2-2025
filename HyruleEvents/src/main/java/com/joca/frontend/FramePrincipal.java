@@ -3,11 +3,16 @@ package com.joca.frontend;
 import com.joca.frontend.activities.ActivityActionForm;
 import com.joca.frontend.attendance.AttendanceActionForm;
 import com.joca.frontend.events.EventActionsForm;
+import com.joca.frontend.files.ExportImportFiles;
 import com.joca.frontend.participant.ParticipantActionsForm;
 import com.joca.frontend.payments.payment.PaymentActionForm;
 import com.joca.frontend.registrations.RegistrationActionsForm;
 import com.joca.frontend.registrations.validations.ValidationActionForm;
+import com.joca.frontend.reports.ActivityReportForm;
+import com.joca.frontend.reports.ParticipantReportForm;
+import com.joca.services.ReportsService;
 import java.beans.PropertyVetoException;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 
 /**
@@ -17,6 +22,7 @@ import javax.swing.JInternalFrame;
 public class FramePrincipal extends javax.swing.JFrame {
 
     private LogPrinter logPrinter;
+    private ExportImportFiles exportImportFiles;
 
     /**
      * Creates new form FramePrincipal
@@ -25,6 +31,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         logPrinter = new LogPrinter();
+        exportImportFiles = new ExportImportFiles(panePrincipal);
         panePrincipal.add(logPrinter);
     }
 
@@ -52,6 +59,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         attendanceMenu = new javax.swing.JMenuItem();
         logMenu = new javax.swing.JMenu();
         consoleMenu = new javax.swing.JMenuItem();
+        reportsMenu = new javax.swing.JMenu();
+        certificateMenu = new javax.swing.JMenuItem();
+        participantsReportMenu = new javax.swing.JMenuItem();
+        activitiesReportMenu = new javax.swing.JMenuItem();
+        eventsReportMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,6 +166,42 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         optionsMenu.add(logMenu);
 
+        reportsMenu.setText("Reportes");
+
+        certificateMenu.setText("Certificado");
+        certificateMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                certificateMenuActionPerformed(evt);
+            }
+        });
+        reportsMenu.add(certificateMenu);
+
+        participantsReportMenu.setText("Participantes");
+        participantsReportMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                participantsReportMenuActionPerformed(evt);
+            }
+        });
+        reportsMenu.add(participantsReportMenu);
+
+        activitiesReportMenu.setText("Actividades");
+        activitiesReportMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activitiesReportMenuActionPerformed(evt);
+            }
+        });
+        reportsMenu.add(activitiesReportMenu);
+
+        eventsReportMenu.setText("Eventos");
+        eventsReportMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eventsReportMenuActionPerformed(evt);
+            }
+        });
+        reportsMenu.add(eventsReportMenu);
+
+        optionsMenu.add(reportsMenu);
+
         setJMenuBar(optionsMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -235,25 +283,52 @@ public class FramePrincipal extends javax.swing.JFrame {
         logPrinter.setVisible(true);
     }//GEN-LAST:event_consoleMenuActionPerformed
 
+    private void certificateMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_certificateMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_certificateMenuActionPerformed
+
+    private void participantsReportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_participantsReportMenuActionPerformed
+        ParticipantReportForm reportForm = new ParticipantReportForm(this);
+        openNewWindow(reportForm);
+    }//GEN-LAST:event_participantsReportMenuActionPerformed
+
+    private void activitiesReportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activitiesReportMenuActionPerformed
+        ActivityReportForm reportForm = new ActivityReportForm(this);
+        openNewWindow(reportForm);
+    }//GEN-LAST:event_activitiesReportMenuActionPerformed
+
+    private void eventsReportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventsReportMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eventsReportMenuActionPerformed
+
     public void printOnLog(String message) {
         logPrinter.insertLine(message);
+    }
+    
+    public void saveHtml(String html, String title) {
+        exportImportFiles.createHtml(html, title);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu actionsMenu;
     private javax.swing.JMenuItem activitiesMenu;
+    private javax.swing.JMenuItem activitiesReportMenu;
     private javax.swing.JMenuItem attendanceMenu;
+    private javax.swing.JMenuItem certificateMenu;
     private javax.swing.JMenuItem consoleMenu;
     private javax.swing.JMenuItem eventsMenu;
+    private javax.swing.JMenuItem eventsReportMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem loadFileMenu;
     private javax.swing.JMenu logMenu;
     private javax.swing.JMenuBar optionsMenu;
     private javax.swing.JDesktopPane panePrincipal;
     private javax.swing.JMenuItem participantsMenu;
+    private javax.swing.JMenuItem participantsReportMenu;
     private javax.swing.JMenuItem paymentMenu;
     private javax.swing.JMenu registrationsMenu;
     private javax.swing.JMenuItem registrationsMenuItem;
+    private javax.swing.JMenu reportsMenu;
     private javax.swing.JMenuItem validationsMenu;
     // End of variables declaration//GEN-END:variables
 }
